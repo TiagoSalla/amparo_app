@@ -1,16 +1,14 @@
+import 'package:amparo_app/screen/resident_list/resident_list_screen.dart';
 import 'package:flutter/material.dart';
 
-// Stateful é para modificar a tela, por exemplo: o teclado sobe
-class LoginScreen extends StatelessWidget {
+class Login extends StatelessWidget {
+  final bool _showPassword = false;
+  final String asylumName;
 
-  final String nomeAsilo;
-  LoginScreen({Key key, @required this.nomeAsilo}) : super(key: key);
-
-  bool _showPassword = false;
+  Login({required this.asylumName});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -42,18 +40,14 @@ class LoginScreen extends StatelessWidget {
       ),
       backgroundColor: Color(0xFF1D6AFF),
       body: Column(
-
         children: <Widget>[
-
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-
               children: <Widget>[
-
                 Text(
-                    'Bem-vindo ao ' + nomeAsilo,
+                    'Bem-vindo ao ' + asylumName,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 34,
@@ -75,9 +69,7 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
           ),
-
           Container(
-
             child: Card(
               margin:  const EdgeInsets.symmetric(horizontal: 0),
               shape: RoundedRectangleBorder(
@@ -85,13 +77,10 @@ class LoginScreen extends StatelessWidget {
                       topLeft: Radius.circular(50), topRight: Radius.circular(50)
                   )
               ),
-
               child: Padding(
                 padding: const EdgeInsets.all(16),
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-
                   children: [
                     Text(
                       'Acesse sua conta',
@@ -103,11 +92,8 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-
-
                     Padding(
                       padding: const EdgeInsets.only(left: 3, bottom: 4, top: 6),
-
                       child: Text(
                         'Caso não possua credenciais de acesso, contate o administrador',
                         textAlign: TextAlign.center,
@@ -118,10 +104,8 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(left: 10,  top: 0, right: 10),
-
                       child: TextFormField(
                         decoration: InputDecoration(
                           icon: Icon(Icons.person),
@@ -138,10 +122,8 @@ class LoginScreen extends StatelessWidget {
                         obscureText: false,
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(left: 10,  top: 10, right: 10),
-
                       child: TextFormField(
                         decoration: InputDecoration(
                           icon: Icon(Icons.lock),
@@ -162,13 +144,10 @@ class LoginScreen extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.text,
                         obscureText: true,
-
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-
                       child: GestureDetector(
                         child: Text(
                           'Esqueceu a senha?',
@@ -181,10 +160,8 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(left: 10, bottom: 4, top: 10, right: 10),
-
                       child: RaisedButton(
                         color: Color(0xFF1D6AFF),
                         child: Text(
@@ -199,23 +176,14 @@ class LoginScreen extends StatelessWidget {
                         shape: new RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                             side: BorderSide(color: Colors.blueAccent)
-
                         ),
-                        onPressed: (){
-
-                        },
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ResidentList())),
                       ),
-                    ),
-
-                  ],
+                    ),],
                 ),
               ),
-
             ),
-
           )
-
-
         ],
       ),
     );
