@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:amparo_app/screen/login/login_screen.dart';
+import 'package:amparo_app/screens/login/login_screen.dart';
 
 class AsylumSelection extends StatefulWidget {
   final String title;

@@ -1,4 +1,4 @@
-import 'package:amparo_app/screen/resident_list/resident_list_screen.dart';
+import 'package:amparo_app/screens/pages/historypage_screen.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -6,6 +6,13 @@ class Login extends StatelessWidget {
   final String asylumName;
 
   Login({required this.asylumName});
+
+  void _sendData(BuildContext context){
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) =>
+            HistoryPage(nomeAsilo: nomeAsilo, nomeUsuario: nomeUsuario)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +127,9 @@ class Login extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.text,
                         obscureText: false,
+                        onChanged: (usuario){
+                          this.nomeUsuario = usuario;
+                        },
                       ),
                     ),
                     Padding(
