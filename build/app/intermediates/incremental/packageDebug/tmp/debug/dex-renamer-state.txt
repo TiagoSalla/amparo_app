@@ -1,4 +1,0 @@
-#Tue Jun 01 14:03:55 BRT 2021
-base.0=/Users/geovannamartins/Desktop/amparo_app/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
