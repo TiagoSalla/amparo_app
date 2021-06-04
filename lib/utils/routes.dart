@@ -2,7 +2,7 @@ const String PROTOCOL = "http://";
 
 const String DOMAIN = "10.0.2.2:8080/";
 
-const String ADDRESS_PATH =  PROTOCOL + DOMAIN + "addresses/";
+const String ADDRESS_PATH = PROTOCOL + DOMAIN + "addresses/";
 const String DOSAGE_PATH = PROTOCOL + DOMAIN + "dosages/";
 const String HEALTH_INSURANCE_PATH = PROTOCOL + DOMAIN + "health-insurances/";
 const String MEDICINE_PATH = PROTOCOL + DOMAIN + "medicines/";

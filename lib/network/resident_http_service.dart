@@ -9,8 +9,7 @@ class ResidentHttpService {
 
     if (response.statusCode == 200) {
       Iterable body = json.decode(response.body);
-      List<Resident> residents =
-          List<Resident>.from(body.map((model) => Resident.fromJson(model)));
+      List<Resident> residents = List<Resident>.from(body.map((model) => Resident.fromJson(model)));
       return residents;
     } else {
       throw Exception('Failed to load residents');
