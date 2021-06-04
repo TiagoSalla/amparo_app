@@ -1,34 +1,22 @@
-import 'package:amparo_app/tiles/drawer_tile.dart';
+import 'package:amparo_app/widget/drawer/drawer_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
-
-  final String nomeAsilo, nomeUsuario;
+  final String asylumName;
+  final String username;
   final PageController pageController;
-  CustomDrawer(this.nomeAsilo, this.nomeUsuario, this.pageController);
 
+  CustomDrawer(this.asylumName, this.username, this.pageController);
 
   @override
   Widget build(BuildContext context) {
-
-
     Widget _buildDrawerBack() => Container(
-
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF1D6AFF),
-            Colors.white
-          ],
-
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter
-        )
-      ),
-    );
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Color(0xFF1D6AFF), Colors.white], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        );
 
     return Drawer(
-
       child: Stack(
         children: <Widget>[
           _buildDrawerBack(),
@@ -42,39 +30,30 @@ class CustomDrawer extends StatelessWidget {
                 height: 170.0,
 
                 child: Stack(
-
                   children: <Widget>[
-
                     Positioned(
-                      top: 8.0,
-                      left: 0.0,
-                      child: Column(
-
-                        children: <Widget>[
-                          Text(
-                            'amparo |>',
-                            style: TextStyle(
-                                fontFamily: 'Audiowide',
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white
+                        top: 8.0,
+                        left: 0.0,
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'amparo |>',
+                              style: TextStyle(
+                                  fontFamily: 'Audiowide',
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
                             ),
-                          ),
-
-                          Text(
-                            nomeAsilo,
-                            style: TextStyle(
-                                fontFamily: 'SF Pro',
-                                fontSize: 28.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
+                            Text(
+                              asylumName,
+                              style: TextStyle(
+                                  fontFamily: 'SF Pro',
+                                  fontSize: 28.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
-                          ),
-                        ],
-                      )
-                    ),
-
-
+                          ],
+                        )),
                     Positioned(
                       left: 0.0,
                       bottom: 0.0,
@@ -82,14 +61,9 @@ class CustomDrawer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Olá ' + nomeUsuario,
-                            style: TextStyle(
-                              fontFamily: 'SF Pro',
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold
-                            ),
+                            'Olá ' + username,
+                            style: TextStyle(fontFamily: 'SF Pro', fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
-
                           Text(
                             'Configurar conta',
                             style: TextStyle(
@@ -104,7 +78,6 @@ class CustomDrawer extends StatelessWidget {
                   ],
                 ),
               ),
-
               Divider(),
               DrawerTile(Icons.home, 'Sobre', pageController, 0),
               DrawerTile(Icons.people_alt, 'Residentes', pageController, 1),
@@ -112,7 +85,6 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.home, 'Profissionais', pageController, 3),
               DrawerTile(Icons.medical_services, 'Medicamentos', pageController, 4),
               DrawerTile(Icons.home, 'Tratamentos', pageController, 5),
-
             ],
           )
         ],

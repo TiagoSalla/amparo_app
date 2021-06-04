@@ -1,4 +1,4 @@
-import 'package:amparo_app/widgets/custom_drawer.dart';
+import 'package:amparo_app/widget/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
 class About extends StatelessWidget {
