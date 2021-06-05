@@ -1,10 +1,9 @@
+import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:flutter/material.dart';
 import 'package:amparo_app/screen/login/login_screen.dart';
 
 class AsylumSelection extends StatefulWidget {
-  final String title;
-
-  AsylumSelection({required this.title});
+  AsylumSelection();
 
   @override
   _AsylumSelection createState() => _AsylumSelection();
@@ -12,23 +11,16 @@ class AsylumSelection extends StatefulWidget {
 
 class _AsylumSelection extends State<AsylumSelection> {
   List<String> asylums = ['Lar São José', 'Lar São Franscisco', 'Asilo Vale dos Lírios'];
-  late String dropdownValue = asylums.first;
+  late String selectedAsylum = asylums.first;
 
   void _dropDownItemSelected(String newItem) {
     setState(() {
-      this.dropdownValue = newItem;
+      this.selectedAsylum = newItem;
     });
   }
 
   void _sendData(BuildContext context) {
-    String asylumName = dropdownValue.toString();
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Login(
-                  asylumName: asylumName,
-                )));
+    Navigator.of(context).push(DefaultPageRouter(widget: Login(asylumName: selectedAsylum)));
   }
 
   @override
@@ -98,7 +90,7 @@ class _AsylumSelection extends State<AsylumSelection> {
                           style: TextStyle(
                               color: Colors.black, fontSize: 16, fontFamily: 'SF Pro', fontWeight: FontWeight.bold),
                         ),
-                        value: dropdownValue,
+                        value: selectedAsylum,
                         iconEnabledColor: Colors.black,
                         elevation: 16,
                         style: TextStyle(color: Colors.black, fontFamily: 'SF Pro', fontSize: 14),

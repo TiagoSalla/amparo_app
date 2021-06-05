@@ -12,12 +12,19 @@ class ResidentList extends StatefulWidget {
 
 class _ResidentListState extends State<ResidentList> {
   final ResidentHttpService service = ResidentHttpService();
+  late Future<List<Resident>> residentList;
+
+  @override
+  void initState() {
+    super.initState();
+    residentList = service.getResidents();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: service.getResidents(),
+        future: residentList,
         builder: (BuildContext context, AsyncSnapshot<List<Resident>> snapshot) {
           if (snapshot.hasData) {
             List<Resident> residents = snapshot.data!;
@@ -26,7 +33,7 @@ class _ResidentListState extends State<ResidentList> {
                   .map((Resident resident) => ListTile(
                         title: Text(resident.name),
                         onTap: () => Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) => AsylumSelection(title: "Batatinha"))),
+                            .push(MaterialPageRoute(builder: (context) => AsylumSelection())),
                       ))
                   .toList(),
             );

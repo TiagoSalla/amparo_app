@@ -2,7 +2,6 @@ import 'package:amparo_app/widget/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
 class About extends StatelessWidget {
-  final _pageController = PageController();
   final String asylumName;
   final String username;
 
@@ -10,7 +9,6 @@ class About extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return PageView(
-      controller: _pageController,
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Scaffold(
@@ -18,7 +16,7 @@ class About extends StatelessWidget {
             elevation: 0,
             backgroundColor: Color(0xFF1D6AFF),
           ),
-          drawer: CustomDrawer(asylumName, username, _pageController),
+          drawer: CustomDrawer(asylumName, username),
           backgroundColor: Color(0xFF1D6AFF),
           body: Column(
             children: <Widget>[

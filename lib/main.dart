@@ -1,4 +1,4 @@
-import 'package:amparo_app/screen/home/homepage_screen.dart';
+import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

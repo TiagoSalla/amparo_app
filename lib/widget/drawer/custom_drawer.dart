@@ -1,12 +1,14 @@
+import 'package:amparo_app/screen/about/about_screen.dart';
+import 'package:amparo_app/screen/resident/resident_list/resident_list_screen.dart';
+import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/widget/drawer/drawer_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String asylumName;
   final String username;
-  final PageController pageController;
 
-  CustomDrawer(this.asylumName, this.username, this.pageController);
+  CustomDrawer(this.asylumName, this.username);
 
   @override
   Widget build(BuildContext context) {
@@ -79,12 +81,13 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               Divider(),
-              DrawerTile(Icons.home, 'Sobre', pageController, 0),
-              DrawerTile(Icons.people_alt, 'Residentes', pageController, 1),
-              DrawerTile(Icons.person, 'Responsavéis - residentes', pageController, 2),
-              DrawerTile(Icons.home, 'Profissionais', pageController, 3),
-              DrawerTile(Icons.medical_services, 'Medicamentos', pageController, 4),
-              DrawerTile(Icons.home, 'Tratamentos', pageController, 5),
+              DrawerTile(
+                  Icons.home, 'Sobre', DefaultPageRouter(widget: About(username: username, asylumName: asylumName))),
+              DrawerTile(Icons.people_alt, 'Residentes', DefaultPageRouter(widget: ResidentList())),
+              DrawerTile(Icons.person, 'Responsavéis', DefaultPageRouter(widget: ResidentList())),
+              DrawerTile(Icons.home, 'Profissionais', DefaultPageRouter(widget: ResidentList())),
+              DrawerTile(Icons.medical_services, 'Medicamentos', DefaultPageRouter(widget: ResidentList())),
+              DrawerTile(Icons.home, 'Tratamentos', DefaultPageRouter(widget: ResidentList())),
             ],
           )
         ],
