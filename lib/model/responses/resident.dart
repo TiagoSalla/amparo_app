@@ -53,7 +53,7 @@ class Resident {
       birthDate: json['birthDate'],
       healthInsurance: HealthInsurance.fromJson(json['healthInsurance']),
       responsibleList: (json['responsibleList'] as List).map((i) => Responsible.fromJson(i)).toList(),
-      treatment: Treatment.fromJson(json['treatment']),
+      treatment: json['treatment'] == null ? null : Treatment.fromJson(json['treatment']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     );

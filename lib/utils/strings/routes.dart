@@ -1,6 +1,6 @@
 const String PROTOCOL = "https://";
 
-const String DOMAIN = "amparo-api-prod.herokuapp.com/";
+const String DOMAIN = "amparo-api-develop.herokuapp.com/";
 
 const String ADDRESS_PATH = PROTOCOL + DOMAIN + "addresses/";
 const String DOSAGE_PATH = PROTOCOL + DOMAIN + "dosages/";
@@ -12,6 +12,6 @@ const String RESPONSIBLE_PATH = PROTOCOL + DOMAIN + "responsibles/";
 const String TREATMENT_PATH = PROTOCOL + DOMAIN + "treatments/";
 
 const String CREATE_PATH = "create";
-const String DELETE_PATH = "delete";
-const String UPDATE_PATH = "update";
+const String DELETE_PATH = "delete/";
+const String UPDATE_PATH = "update/";
 const String LOGIN_PATH = "login";
