@@ -1,4 +1,4 @@
-import 'package:amparo_app/model/resident.dart';
+import 'package:amparo_app/model/responses/resident.dart';
 import 'package:amparo_app/network/resident_http_service.dart';
 import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';

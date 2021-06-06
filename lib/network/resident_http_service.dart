@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:amparo_app/utils/strings/routes.dart';
-import 'package:amparo_app/model/resident.dart';
+import 'package:amparo_app/model/responses/resident.dart';
 
 class ResidentHttpService {
   Future<List<Resident>> getResidents() async {

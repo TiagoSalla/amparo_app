@@ -1,12 +1,12 @@
-import 'health_insurance_type.dart';
+import '../responses/health_insurance_type.dart';
 
 class HealthInsurance {
   final int id;
   final HealthInsuranceType healthInsuranceType;
   final String inscription;
   final String? observation;
-  final String createdAt;
-  final String updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
 
   HealthInsurance(
       {required this.id,

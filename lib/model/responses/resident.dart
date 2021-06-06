@@ -1,8 +1,9 @@
-import 'package:amparo_app/model/health_insurance.dart';
-
-import 'gender.dart';
-import 'marital_status.dart';
-import 'race.dart';
+import '../responses/health_insurance.dart';
+import '../responses/responsible.dart';
+import '../responses/treatment.dart';
+import '../enums/gender.dart';
+import '../enums/marital_status.dart';
+import '../enums/race.dart';
 
 class Resident {
   final int id;
@@ -18,8 +19,8 @@ class Resident {
   final HealthInsurance healthInsurance;
   final List<Responsible> responsibleList;
   final Treatment? treatment;
-  final String createdAt;
-  final String updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
 
   Resident(
       {required this.id,
@@ -51,8 +52,8 @@ class Resident {
       maritalStatus: ResponseMaritalStatusMap[json['maritalStatus']]!,
       birthDate: json['birthDate'],
       healthInsurance: HealthInsurance.fromJson(json['healthInsurance']),
-      responsibleList: json['responsibleList'],
-      treatment: json['treatment'],
+      responsibleList: (json['responsibleList'] as List).map((i) => Responsible.fromJson(i)).toList(),
+      treatment: Treatment.fromJson(json['treatment']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     );

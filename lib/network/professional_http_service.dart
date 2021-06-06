@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:amparo_app/model/login_request.dart';
+import 'package:amparo_app/model/requests/login_request.dart';
 import 'package:http/http.dart';
 import 'package:amparo_app/utils/strings/routes.dart';
 
