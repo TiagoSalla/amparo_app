@@ -1,6 +1,9 @@
-import 'gender.dart';
-import 'marital_status.dart';
-import 'race.dart';
+import '../responses/health_insurance.dart';
+import '../responses/responsible.dart';
+import '../responses/treatment.dart';
+import '../enums/gender.dart';
+import '../enums/marital_status.dart';
+import '../enums/race.dart';
 
 class Resident {
   final int id;
@@ -13,11 +16,11 @@ class Resident {
   final Gender gender;
   final MaritalStatus maritalStatus;
   final String birthDate;
-  final int healthInsuranceId;
-  final List<int> responsibleIdList;
-  final int? treatmentId;
-  final String createdAt;
-  final String updatedAt;
+  final HealthInsurance healthInsurance;
+  final List<Responsible> responsibleList;
+  final Treatment? treatment;
+  final String? createdAt;
+  final String? updatedAt;
 
   Resident(
       {required this.id,
@@ -30,9 +33,9 @@ class Resident {
       required this.gender,
       required this.maritalStatus,
       required this.birthDate,
-      required this.healthInsuranceId,
-      required this.responsibleIdList,
-      required this.treatmentId,
+      required this.healthInsurance,
+      required this.responsibleList,
+      required this.treatment,
       required this.createdAt,
       required this.updatedAt});
 
@@ -48,9 +51,9 @@ class Resident {
       gender: ResponseGenderMap[json['gender']]!,
       maritalStatus: ResponseMaritalStatusMap[json['maritalStatus']]!,
       birthDate: json['birthDate'],
-      healthInsuranceId: json['healthInsuranceId'],
-      responsibleIdList: json['responsibleIdList'].cast<int>(),
-      treatmentId: json['treatmentId'],
+      healthInsurance: HealthInsurance.fromJson(json['healthInsurance']),
+      responsibleList: (json['responsibleList'] as List).map((i) => Responsible.fromJson(i)).toList(),
+      treatment: json['treatment'] == null ? null : Treatment.fromJson(json['treatment']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     );

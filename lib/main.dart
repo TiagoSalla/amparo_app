@@ -1,7 +1,5 @@
-import 'dart:io';
-import 'package:amparo_app/screens/home/homepage_screen.dart';
+import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,17 +13,15 @@ class MyApp extends StatelessWidget {
       title: 'Amparo App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: Colors.blueAccent,
-        cursorColor: Colors.blueAccent
-      ),
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          scaffoldBackgroundColor: Colors.blueAccent,
+          cursorColor: Colors.blueAccent),
       home: Scaffold(
         body: Center(
-          child: AsylumSelection(title: "Lar São José",),
+          child: AsylumSelection(),
         ),
       ),
     );
   }
 }
-
