@@ -1,14 +1,16 @@
 import 'package:amparo_app/screen/about/about_screen.dart';
 import 'package:amparo_app/screen/resident/resident_list/resident_list_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
-import 'package:amparo_app/widget/drawer/drawer_tile.dart';
+import 'package:amparo_app/network/session.dart';
+import 'package:amparo_app/utils/strings/texts.dart';
+import 'package:amparo_app/components/drawer/drawer_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final String asylumName;
-  final String username;
+  CustomDrawer({Key? key}) : super(key: key);
 
-  CustomDrawer(this.asylumName, this.username);
+  late final DefaultPageRouter aboutRouter = DefaultPageRouter(widget: About());
+  late final DefaultPageRouter residentRouter = DefaultPageRouter(widget: ResidentList());
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             Text(
-                              'amparo |>',
+                              AMPARO,
                               style: TextStyle(
                                   fontFamily: 'Audiowide',
                                   fontSize: 18.0,
@@ -47,7 +49,7 @@ class CustomDrawer extends StatelessWidget {
                                   color: Colors.white),
                             ),
                             Text(
-                              asylumName,
+                              Session.shared.asylumName,
                               style: TextStyle(
                                   fontFamily: 'SF Pro',
                                   fontSize: 28.0,
@@ -63,17 +65,17 @@ class CustomDrawer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Olá ' + username,
+                            HELLO + Session.shared.username,
                             style: TextStyle(fontFamily: 'SF Pro', fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            'Configurar conta',
-                            style: TextStyle(
-                              fontFamily: 'SF pro',
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
+                          // Text(
+                          //   'Configurar conta',
+                          //   style: TextStyle(
+                          //     fontFamily: 'SF pro',
+                          //     fontSize: 16.0,
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // )
                         ],
                       ),
                     )
@@ -81,13 +83,12 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               Divider(),
-              DrawerTile(
-                  Icons.home, 'Sobre', DefaultPageRouter(widget: About(username: username, asylumName: asylumName))),
-              DrawerTile(Icons.people_alt, 'Residentes', DefaultPageRouter(widget: ResidentList())),
-              DrawerTile(Icons.person, 'Responsavéis', DefaultPageRouter(widget: ResidentList())),
-              DrawerTile(Icons.home, 'Profissionais', DefaultPageRouter(widget: ResidentList())),
-              DrawerTile(Icons.medical_services, 'Medicamentos', DefaultPageRouter(widget: ResidentList())),
-              DrawerTile(Icons.home, 'Tratamentos', DefaultPageRouter(widget: ResidentList())),
+              DrawerTile(Icons.home, ABOUT, aboutRouter),
+              DrawerTile(Icons.people_alt, RESIDENTS, residentRouter),
+              DrawerTile(Icons.person, RESPONSIBLES, residentRouter),
+              DrawerTile(Icons.home, PROFESSIONALS, residentRouter),
+              DrawerTile(Icons.medical_services, MEDICINES, residentRouter),
+              DrawerTile(Icons.home, TREATMENTS, residentRouter),
             ],
           )
         ],

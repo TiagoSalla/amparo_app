@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:amparo_app/utils/routes.dart';
+import 'package:amparo_app/utils/strings/routes.dart';
 import 'package:amparo_app/model/resident.dart';
 
 class ResidentHttpService {
@@ -14,5 +14,14 @@ class ResidentHttpService {
     } else {
       throw Exception('Failed to load residents');
     }
+  }
+
+  Future<bool> deleteResident(int id) async {
+    Response response = await delete(Uri.parse(RESIDENT_PATH + DELETE_PATH + id.toString()));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

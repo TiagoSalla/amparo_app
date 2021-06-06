@@ -1,6 +1,7 @@
 import 'package:amparo_app/network/professional_http_service.dart';
 import 'package:amparo_app/screen/about/about_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
+import 'package:amparo_app/network/session.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -196,12 +197,9 @@ class _Login extends State<Login> {
                             setState(() {
                               _callingApi = false;
                             });
-
-                            Navigator.of(context).push(DefaultPageRouter(
-                                widget: About(
-                              asylumName: widget.asylumName,
-                              username: _username,
-                            )));
+                            Session.shared.asylumName = widget.asylumName;
+                            Session.shared.username = _username;
+                            Navigator.of(context).push(DefaultPageRouter(widget: About()));
                           } else {
                             setState(() {
                               _callingApi = false;
