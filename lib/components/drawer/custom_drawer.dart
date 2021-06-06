@@ -32,7 +32,6 @@ class CustomDrawer extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 8.0),
                 //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 height: 170.0,
-
                 child: Stack(
                   children: <Widget>[
                     Positioned(
