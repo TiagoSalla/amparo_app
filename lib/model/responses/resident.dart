@@ -16,8 +16,9 @@ class Resident {
   final Gender gender;
   final MaritalStatus maritalStatus;
   final String birthDate;
+  final int age;
   final HealthInsurance healthInsurance;
-  final List<Responsible> responsibleList;
+  final Responsible? responsible;
   final Treatment? treatment;
   final String? createdAt;
   final String? updatedAt;
@@ -33,8 +34,9 @@ class Resident {
       required this.gender,
       required this.maritalStatus,
       required this.birthDate,
+      required this.age,
       required this.healthInsurance,
-      required this.responsibleList,
+      required this.responsible,
       required this.treatment,
       required this.createdAt,
       required this.updatedAt});
@@ -51,8 +53,9 @@ class Resident {
       gender: ResponseGenderMap[json['gender']]!,
       maritalStatus: ResponseMaritalStatusMap[json['maritalStatus']]!,
       birthDate: json['birthDate'],
+      age: json['age'],
       healthInsurance: HealthInsurance.fromJson(json['healthInsurance']),
-      responsibleList: (json['responsibleList'] as List).map((i) => Responsible.fromJson(i)).toList(),
+      responsible: json['responsible'] == null ? null : Responsible.fromJson(json['responsible']),
       treatment: json['treatment'] == null ? null : Treatment.fromJson(json['treatment']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],

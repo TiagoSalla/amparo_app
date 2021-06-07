@@ -1,6 +1,7 @@
 import 'package:amparo_app/model/responses/resident.dart';
 import 'package:amparo_app/network/resident_http_service.dart';
 import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
+import 'package:amparo_app/screen/resident/resident_detail/resident_detail_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
@@ -101,7 +102,7 @@ class _ResidentListState extends State<ResidentList> {
                     .map(
                       (Resident resident) => Card(
                         child: ListTile(
-                            title: Text(resident.name),
+                            title: Text((resident.socialName == null ? resident.name : resident.socialName)!),
                             trailing: PopupMenuButton(
                               tooltip: "Abrir menu de opções",
                               onSelected: _didSelectAction,
@@ -128,8 +129,8 @@ class _ResidentListState extends State<ResidentList> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                               icon: Icon(Icons.more_vert),
                             ),
-                            onTap: () =>
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AsylumSelection()))),
+                            onTap: () => Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) => ResidentDetail(resident: resident)))),
                       ),
                     )
                     .toList(),

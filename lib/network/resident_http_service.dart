@@ -8,7 +8,7 @@ class ResidentHttpService {
     Response response = await get(Uri.parse(RESIDENT_PATH));
 
     if (response.statusCode == 200) {
-      Iterable body = json.decode(response.body);
+      Iterable body = json.decode(utf8.decode(response.bodyBytes));
       List<Resident> residents = List<Resident>.from(body.map((model) => Resident.fromJson(model)));
       return residents;
     } else {
