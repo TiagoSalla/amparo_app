@@ -5,6 +5,21 @@ enum ProfessionalSpecialty {
   attendant
 }
 
+extension ProfessionalSpecialtyExtension on ProfessionalSpecialty {
+  String get description {
+    switch (this) {
+      case ProfessionalSpecialty.doctor:
+        return 'Médico(a)';
+      case ProfessionalSpecialty.nurse:
+        return 'Enfermeiro(a)';
+      case ProfessionalSpecialty.caregiver:
+        return 'Cuidador(a)';
+      case ProfessionalSpecialty.attendant:
+        return 'Atendente(a)';
+    }
+  }
+}
+
 const Map<String, ProfessionalSpecialty> ResponseProfessionalSpecialtyMap = {
   'DOCTOR': ProfessionalSpecialty.doctor,
   'NURSE': ProfessionalSpecialty.nurse,

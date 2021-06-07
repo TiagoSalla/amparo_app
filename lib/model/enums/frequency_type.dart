@@ -4,6 +4,19 @@ enum FrequencyType {
   days
 }
 
+extension FrequencyTyperExtension on FrequencyType {
+  String get description {
+    switch (this) {
+      case FrequencyType.minutes:
+        return 'minuto(s)';
+      case FrequencyType.hours:
+        return 'hora(s)';
+      case FrequencyType.days:
+        return 'dia(s)';
+    }
+  }
+}
+
 const Map<String, FrequencyType> ResponseFrequencyTypeMap = {
   'MINUTES': FrequencyType.minutes,
   'HOURS': FrequencyType.hours,

@@ -6,6 +6,23 @@ enum MaritalStatus {
   divorced
 }
 
+extension MaritalStatusExtension on MaritalStatus {
+  String get description {
+    switch (this) {
+      case MaritalStatus.single:
+        return 'Solteiro(a)';
+      case MaritalStatus.married:
+        return 'Casado(a)';
+      case MaritalStatus.widow:
+        return 'Viúvo(a)';
+      case MaritalStatus.separated:
+        return 'Separado(a)';
+      case MaritalStatus.divorced:
+        return 'Divorciado(a)';
+    }
+  }
+}
+
 const Map<String, MaritalStatus> ResponseMaritalStatusMap = {
   'SINGLE': MaritalStatus.single,
   'MARRIED': MaritalStatus.married,

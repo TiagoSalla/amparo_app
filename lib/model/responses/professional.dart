@@ -14,6 +14,7 @@ class Professional {
   final String cpf;
   final String rg;
   final String birthDate;
+  final int age;
   final Race race;
   final Gender gender;
   final MaritalStatus maritalStatus;
@@ -34,6 +35,7 @@ class Professional {
       required this.cpf,
       required this.rg,
       required this.birthDate,
+      required this.age,
       required this.race,
       required this.gender,
       required this.maritalStatus,
@@ -55,6 +57,7 @@ class Professional {
         cpf: json['cpf'],
         rg: json['rg'],
         birthDate: json['birthDate'],
+        age: json['age'],
         race: ResponseRaceMap[json['race']]!,
         gender: ResponseGenderMap[json['gender']]!,
         maritalStatus: ResponseMaritalStatusMap[json['maritalStatus']]!,

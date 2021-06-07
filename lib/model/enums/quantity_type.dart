@@ -7,6 +7,25 @@ enum QuantityType {
   g
 }
 
+extension QuantityTypeExtension on QuantityType {
+  String get description {
+    switch (this) {
+      case QuantityType.pill:
+        return 'comprimido(s)';
+      case QuantityType.capsule:
+        return 'cápsula(s)';
+      case QuantityType.drops:
+        return 'gota(s)';
+      case QuantityType.ml:
+        return 'ml';
+      case QuantityType.mg:
+        return 'mg';
+      case QuantityType.g:
+        return 'g';
+    }
+  }
+}
+
 const Map<String, QuantityType> ResponseQuantityTypeMap = {
   'PILL': QuantityType.pill,
   'CAPSULE': QuantityType.capsule,

@@ -10,6 +10,31 @@ enum AdministrationRoute {
   sublingual,
 }
 
+extension AdministrationRouteExtension on AdministrationRoute {
+  String get description {
+    switch (this) {
+      case AdministrationRoute.oral:
+        return 'Oral';
+      case AdministrationRoute.parental:
+        return 'Parental';
+      case AdministrationRoute.subcutaneous:
+        return 'Subcutânea';
+      case AdministrationRoute.nasal:
+        return 'Nasal';
+      case AdministrationRoute.rectal:
+        return 'Retal';
+      case AdministrationRoute.intravesical:
+        return 'Intravesical';
+      case AdministrationRoute.nebulization:
+        return 'Nebulização';
+      case AdministrationRoute.ocular:
+        return 'Ocular';
+      case AdministrationRoute.sublingual:
+        return 'Sublingual';
+    }
+  }
+}
+
 const Map<String, AdministrationRoute> ResponseAdministrationRouteMap = {
   'ORAL': AdministrationRoute.oral,
   'PARENTAL': AdministrationRoute.parental,
