@@ -102,7 +102,7 @@ class _MedicineListState extends State<MedicineList>{
                     .map(
                       (Medicine medicine) => Card(
                     child: ListTile(
-                        title: Text((medicine.name == null ? medicine.name : medicine.name)!),
+                        title: Text(medicine.name),
                         trailing: PopupMenuButton(
                           tooltip: "Abrir menu de opções",
                           onSelected: _didSelectAction,
