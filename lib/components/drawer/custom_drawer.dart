@@ -1,4 +1,5 @@
 import 'package:amparo_app/screen/about/about_screen.dart';
+import 'package:amparo_app/screen/medicine/medicine_list/medicine_list_screen.dart';
 import 'package:amparo_app/screen/resident/resident_list/resident_list_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/network/session.dart';
@@ -11,6 +12,7 @@ class CustomDrawer extends StatelessWidget {
 
   late final DefaultPageRouter aboutRouter = DefaultPageRouter(widget: About());
   late final DefaultPageRouter residentRouter = DefaultPageRouter(widget: ResidentList());
+  late final DefaultPageRouter medicineRouter = DefaultPageRouter(widget: MedicineList());
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,7 @@ class CustomDrawer extends StatelessWidget {
               DrawerTile(Icons.people_alt, RESIDENTS, residentRouter),
               DrawerTile(Icons.person, RESPONSIBLES, residentRouter),
               DrawerTile(Icons.home, PROFESSIONALS, residentRouter),
-              DrawerTile(Icons.medical_services, MEDICINES, residentRouter),
+              DrawerTile(Icons.medical_services, MEDICINES, medicineRouter),
               DrawerTile(Icons.home, TREATMENTS, residentRouter),
             ],
           )
