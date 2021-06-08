@@ -1,6 +1,5 @@
 import 'package:amparo_app/model/responses/resident.dart';
 import 'package:amparo_app/network/resident_http_service.dart';
-import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:amparo_app/screen/resident/resident_detail/resident_detail_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
