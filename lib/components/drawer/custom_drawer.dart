@@ -19,7 +19,7 @@ class CustomDrawer extends StatelessWidget {
     Widget _buildDrawerBack() => Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                  colors: [Color(0xFF1D6AFF), Colors.white], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  colors: [Color(0xFF1D6AFF), Colors.white], begin: Alignment.topCenter, end: Alignment.bottomCenter, stops: [0.28, 0.28])),
         );
 
     return Drawer(
@@ -27,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
         children: <Widget>[
           _buildDrawerBack(),
           ListView(
-            padding: EdgeInsets.only(left: 10.0, top: 16.0),
+            padding: EdgeInsets.only(left: 32.0, top: 16.0),
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(bottom: 8.0),
@@ -47,7 +47,7 @@ class CustomDrawer extends StatelessWidget {
                                   fontFamily: 'Audiowide',
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.white),
+                                  color: Colors.white,),
                             ),
                             Text(
                               Session.shared.asylumName,
@@ -67,7 +67,7 @@ class CustomDrawer extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             HELLO + Session.shared.username,
-                            style: TextStyle(fontFamily: 'SF Pro', fontSize: 18.0, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontFamily: 'SF Pro', fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                           // Text(
                           //   'Configurar conta',
@@ -84,12 +84,12 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               Divider(),
-              DrawerTile(Icons.home, ABOUT, aboutRouter),
-              DrawerTile(Icons.people_alt, RESIDENTS, residentRouter),
-              DrawerTile(Icons.person, RESPONSIBLES, residentRouter),
-              DrawerTile(Icons.home, PROFESSIONALS, residentRouter),
+              DrawerTile(Icons.info, ABOUT, aboutRouter),
+              DrawerTile(Icons.badge, RESIDENTS, residentRouter),
+              DrawerTile(Icons.people, RESPONSIBLES, residentRouter),
+              DrawerTile(Icons.perm_contact_cal, PROFESSIONALS, residentRouter),
               DrawerTile(Icons.medical_services, MEDICINES, medicineRouter),
-              DrawerTile(Icons.home, TREATMENTS, residentRouter),
+              DrawerTile(Icons.assignment, TREATMENTS, residentRouter),
             ],
           )
         ],
