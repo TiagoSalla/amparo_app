@@ -131,7 +131,7 @@ class _TreatmentListState extends State<TreatmentList> {
                               icon: Icon(Icons.more_vert),
                             ),
                             onTap: () => Navigator.of(context)
-                                ),
+                                .push(MaterialPageRoute(builder: (context) => TreatmentDetail(treatment: treatment)))),
                       ),
                     )
                     .toList(),
