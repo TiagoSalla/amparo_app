@@ -1,6 +1,7 @@
 import 'package:amparo_app/model/responses/resident.dart';
 import 'package:amparo_app/network/resident_http_service.dart';
 import 'package:amparo_app/screen/resident/resident_detail/resident_detail_screen.dart';
+import 'package:amparo_app/screen/resident/resident_edition/resident_edition_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
@@ -30,11 +31,11 @@ class _ResidentListState extends State<ResidentList> {
     });
   }
 
-  Future<void> _didSelectAction(Map<String, int> selection) async {
+  Future<void> _didSelectAction(Map<String, Resident> selection) async {
     if (selection.keys.first == EDIT) {
-      Navigator.of(context).push(DefaultPageRouter(widget: ResidentList()));
+      Navigator.of(context).push(DefaultPageRouter(widget: ResidentEdit(resident: selection.values.first)));
     } else if (selection.keys.first == DELETE) {
-      final bool isValid = await widget.service.deleteResident(selection.values.first);
+      final bool isValid = await widget.service.deleteResident(selection.values.first.id);
 
       if (isValid) {
         _showDialog(context, "Excluído com sucesso", "O residente foi excluído com sucesso!");
@@ -107,8 +108,8 @@ class _ResidentListState extends State<ResidentList> {
                               onSelected: _didSelectAction,
                               itemBuilder: (BuildContext context) {
                                 return ACTIONS.map((String action) {
-                                  return PopupMenuItem<Map<String, int>>(
-                                    value: {action: resident.id},
+                                  return PopupMenuItem<Map<String, Resident>>(
+                                    value: {action: resident},
                                     child: Row(
                                       children: [
                                         Padding(
@@ -144,7 +145,8 @@ class _ResidentListState extends State<ResidentList> {
         child: Container(height: 40.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => print("oi")),
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ResidentEdit())),
         tooltip: 'Criar um residente',
         child: const Icon(Icons.add),
       ),

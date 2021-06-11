@@ -1,10 +1,4 @@
-enum Race {
-  white,
-  black,
-  brown,
-  yellow,
-  indigenous
-}
+enum Race { white, black, brown, yellow, indigenous }
 
 extension RaceExtension on Race {
   String get description {

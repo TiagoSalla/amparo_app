@@ -1,8 +1,10 @@
 import 'package:amparo_app/model/responses/medicine.dart';
+import 'package:intl/intl.dart';
 
 import '../../../network/resident_http_service.dart';
 import '../../../model/responses/resident.dart';
 import '../../../model/enums/professional_specialty.dart';
+import '../../../model/enums/health_insurance_type.dart';
 import '../../../model/enums/administration_route.dart';
 import '../../../model/enums/quantity_type.dart';
 import '../../../model/enums/frequency_type.dart';
@@ -66,7 +68,8 @@ class ResidentDetail extends StatelessWidget {
             buildHorizontalDefinition("Raça:  ", resident.race.description),
             buildHorizontalDefinition("Estado civil:  ", resident.maritalStatus.description),
             buildHorizontalDefinition("Idade:  ", resident.age.toString() + " anos"),
-            buildHorizontalDefinition("Data de nascimento:  ", resident.birthDate),
+            buildHorizontalDefinition(
+                "Data de nascimento:  ", DateFormat("dd/MM/yyyy").format(DateTime.parse(resident.birthDate))),
           ],
         ),
       ),
@@ -92,7 +95,7 @@ class ResidentDetail extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    resident.healthInsurance.healthInsuranceType.rawValue == "SUS"
+                    resident.healthInsurance.healthInsuranceType == HealthInsuranceType.SUS
                         ? "Plano de saúde público"
                         : "Plano de saúde particular",
                     style: TextStyle(fontFamily: 'SF Pro', fontSize: 16.0, color: Colors.blueGrey),
@@ -287,46 +290,57 @@ class ResidentDetail extends StatelessWidget {
   }
 
   Widget buildNameRows() {
-    if (resident.nickname != null) {
-      return Column(
-        children: [
-          Row(
+    Widget? buildNickname() {
+      if (resident.nickname != null) {
+        return Padding(
+          padding: EdgeInsets.only(top: 8.0),
+          child: Row(
             children: [
               Text(
-                (resident.socialName == null ? resident.name : resident.socialName)!,
-                style: TextStyle(fontFamily: 'SF Pro', fontSize: 24.0, color: Colors.black87),
+                resident.nickname!,
+                style: TextStyle(fontFamily: 'SF Pro', fontSize: 16.0, color: Colors.blueGrey),
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 12.0),
-            child: Row(
-              children: [
-                Text(
-                  resident.nickname!,
-                  style: TextStyle(fontFamily: 'SF Pro', fontSize: 16.0, color: Colors.blueGrey),
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 12.0),
-            child: Row(
-              children: [
-                Text(
-                  (resident.socialName == null ? resident.name : resident.socialName)!,
-                  style: TextStyle(fontFamily: 'SF Pro', fontSize: 24.0, color: Colors.black),
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
+        );
+      }
     }
+
+    Widget? buildSocialName() {
+      if (resident.socialName != null) {
+        return Padding(
+          padding: EdgeInsets.only(top: 8.0),
+          child: Row(
+            children: [
+              Text(
+                resident.socialName!,
+                style: TextStyle(fontFamily: 'SF Pro', fontSize: 16.0, color: Colors.blueGrey),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+
+    return Padding(
+        padding: EdgeInsets.only(bottom: 8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  resident.name,
+                  style: TextStyle(fontFamily: 'SF Pro', fontSize: 24.0, color: Colors.black87),
+                ),
+              ],
+            ),
+            Container(
+              child: buildSocialName(),
+            ),
+            Container(
+              child: buildNickname(),
+            ),
+          ],
+        ));
   }
 }

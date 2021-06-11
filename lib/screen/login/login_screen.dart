@@ -193,18 +193,15 @@ class _Login extends State<Login> {
 
                           final bool isValid = await widget.service.login(_username, _password);
 
+                          setState(() {
+                            _callingApi = false;
+                          });
+
                           if (isValid) {
-                            setState(() {
-                              _callingApi = false;
-                            });
                             Session.shared.asylumName = widget.asylumName;
                             Session.shared.username = _username;
                             Navigator.of(context).push(DefaultPageRouter(widget: About()));
                           } else {
-                            setState(() {
-                              _callingApi = false;
-                            });
-
                             _showDialog(context);
                           }
                         },

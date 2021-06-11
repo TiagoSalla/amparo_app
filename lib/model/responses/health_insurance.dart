@@ -1,4 +1,4 @@
-import '../responses/health_insurance_type.dart';
+import '../enums/health_insurance_type.dart';
 
 class HealthInsurance {
   final int id;
@@ -19,7 +19,7 @@ class HealthInsurance {
   factory HealthInsurance.fromJson(Map<String, dynamic> json) {
     return HealthInsurance(
         id: json['id'],
-        healthInsuranceType: HealthInsuranceType.fromJson(json['healthInsuranceType']),
+        healthInsuranceType: ResponseHealthInsuranceTypeMap[json['healthInsuranceType']]!,
         inscription: json['inscription'],
         observation: json['observation'],
         createdAt: json['createdAt'],
