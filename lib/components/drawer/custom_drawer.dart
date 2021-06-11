@@ -1,5 +1,7 @@
 import 'package:amparo_app/screen/about/about_screen.dart';
+import 'package:amparo_app/screen/medicine/medicine_list/medicine_list_screen.dart';
 import 'package:amparo_app/screen/resident/resident_list/resident_list_screen.dart';
+import 'package:amparo_app/screen/treatment/treatment_list/treatment_list_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/network/session.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
@@ -10,14 +12,16 @@ class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
 
   late final DefaultPageRouter aboutRouter = DefaultPageRouter(widget: About());
+  late final DefaultPageRouter treatmentRouter = DefaultPageRouter(widget: TreatmentList());
   late final DefaultPageRouter residentRouter = DefaultPageRouter(widget: ResidentList());
+  late final DefaultPageRouter medicineRouter = DefaultPageRouter(widget: MedicineList());
 
   @override
   Widget build(BuildContext context) {
     Widget _buildDrawerBack() => Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                  colors: [Color(0xFF1D6AFF), Colors.white], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  colors: [Color(0xFF1D6AFF), Colors.white], begin: Alignment.topCenter, end: Alignment.bottomCenter, stops: [0.28, 0.28])),
         );
 
     return Drawer(
@@ -25,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
         children: <Widget>[
           _buildDrawerBack(),
           ListView(
-            padding: EdgeInsets.only(left: 10.0, top: 16.0),
+            padding: EdgeInsets.only(left: 32.0, top: 16.0),
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(bottom: 8.0),
@@ -45,7 +49,7 @@ class CustomDrawer extends StatelessWidget {
                                   fontFamily: 'Audiowide',
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.white),
+                                  color: Colors.white,),
                             ),
                             Text(
                               Session.shared.asylumName,
@@ -65,7 +69,7 @@ class CustomDrawer extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             HELLO + Session.shared.username,
-                            style: TextStyle(fontFamily: 'SF Pro', fontSize: 18.0, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontFamily: 'SF Pro', fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                           // Text(
                           //   'Configurar conta',
@@ -82,12 +86,12 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
               Divider(),
-              DrawerTile(Icons.home, ABOUT, aboutRouter),
-              DrawerTile(Icons.people_alt, RESIDENTS, residentRouter),
-              DrawerTile(Icons.person, RESPONSIBLES, residentRouter),
-              DrawerTile(Icons.home, PROFESSIONALS, residentRouter),
-              DrawerTile(Icons.medical_services, MEDICINES, residentRouter),
-              DrawerTile(Icons.home, TREATMENTS, residentRouter),
+              DrawerTile(Icons.info, ABOUT, aboutRouter),
+              DrawerTile(Icons.badge, RESIDENTS, residentRouter),
+              DrawerTile(Icons.people, RESPONSIBLES, residentRouter),
+              DrawerTile(Icons.perm_contact_cal, PROFESSIONALS, residentRouter),
+              DrawerTile(Icons.medical_services, MEDICINES, medicineRouter),
+              DrawerTile(Icons.assignment, TREATMENTS, treatmentRouter),
             ],
           )
         ],

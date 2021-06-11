@@ -23,14 +23,14 @@ class DrawerTile extends StatelessWidget {
               Icon(
                 icon,
                 size: 32.0,
-                color: Colors.black,
+                color: Color(0xFF6B6B6B),
               ),
               SizedBox(
                 width: 32.0,
               ),
               Text(
                 text,
-                style: TextStyle(fontFamily: 'SF Pro', fontSize: 16.0, color: Colors.black),
+                style: TextStyle(fontFamily: 'SF Pro', fontSize: 16.0, color: Color(0xFF6B6B6B)),
               )
             ],
           ),
