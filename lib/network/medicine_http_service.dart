@@ -4,6 +4,8 @@ import 'package:http/http.dart';
 import 'package:amparo_app/utils/strings/routes.dart';
 
 class MedicineHttpService {
+  final Map<String, String> headers = {"Accept": "application/json", "content-type": "application/json"};
+
   Future<List<Medicine>> getMedicines() async {
     Response response = await get(Uri.parse(MEDICINE_PATH));
 

@@ -16,3 +16,4 @@ const String DELETE_PATH = "delete/";
 const String UPDATE_PATH = "update/";
 const String LOGIN_PATH = "login";
 const String TYPES_PATH = "types";
+const String OPTIONS_PATH = "options";

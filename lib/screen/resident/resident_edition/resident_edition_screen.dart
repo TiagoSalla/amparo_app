@@ -22,7 +22,7 @@ class ResidentEdit extends StatefulWidget {
 }
 
 class _ResidentEditState extends State<ResidentEdit> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _residentFormKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _socialNameController;
   late TextEditingController _nicknameController;
@@ -59,7 +59,14 @@ class _ResidentEditState extends State<ResidentEdit> {
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _socialNameController.dispose();
+    _nicknameController.dispose();
+    _cpfController.dispose();
+    _rgController.dispose();
     _birthDateController.dispose();
+    _inscriptionController.dispose();
+    _observationController.dispose();
     super.dispose();
   }
 
@@ -107,7 +114,7 @@ class _ResidentEditState extends State<ResidentEdit> {
                         style: TextStyle(fontFamily: 'SF Pro', fontSize: 24.0, color: Colors.black87),
                       ),
                       Form(
-                        key: _formKey,
+                        key: _residentFormKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -353,7 +360,7 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   padding: const EdgeInsets.only(left: 8.0, top: 12.0, right: 16.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      _formKey.currentState!.reset();
+                                      _residentFormKey.currentState!.reset();
                                       setState(() {
                                         _nameController.text = "";
                                         _socialNameController.text = "";
@@ -379,7 +386,7 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   padding: const EdgeInsets.only(left: 16.0, top: 12.0, right: 8.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (_residentFormKey.currentState!.validate()) {
                                         final request = ResidentRequest(
                                             name: _nameController.text,
                                             socialName:

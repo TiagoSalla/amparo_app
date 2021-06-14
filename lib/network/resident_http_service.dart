@@ -5,7 +5,7 @@ import '../model/responses/resident.dart';
 import '../model/requests/resident_request.dart';
 
 class ResidentHttpService {
-  var headers = {"Accept": "application/json", "content-type": "application/json"};
+  final Map<String, String> headers = {"Accept": "application/json", "content-type": "application/json"};
 
   Future<List<Resident>> getResidents() async {
     Response response = await get(Uri.parse(RESIDENT_PATH));
@@ -40,7 +40,6 @@ class ResidentHttpService {
   }
 
   Future<bool> update(int id, ResidentRequest residentRequest) async {
-    var json = jsonEncode(residentRequest.toJson());
     Response response = await put(Uri.parse(RESIDENT_PATH + UPDATE_PATH + id.toString()),
         headers: headers, body: jsonEncode(residentRequest.toJson()));
 

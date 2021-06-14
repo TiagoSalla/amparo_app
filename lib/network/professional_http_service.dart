@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'package:amparo_app/utils/strings/routes.dart';
 
 class ProfessionalHttpService {
-  var headers = {"Accept": "application/json", "content-type": "application/json"};
+  final Map<String, String> headers = {"Accept": "application/json", "content-type": "application/json"};
 
   Future<bool> login(String username, String password) async {
     final LoginRequest request = LoginRequest(username: username, password: password);
