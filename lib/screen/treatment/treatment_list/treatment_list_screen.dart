@@ -1,7 +1,7 @@
 import 'package:amparo_app/model/responses/treatment.dart';
 import 'package:amparo_app/network/treatment_http_service.dart';
-import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:amparo_app/screen/treatment/treatment_detail/treatment_detail_screen.dart';
+import 'package:amparo_app/screen/treatment/treatment_edition/treatment_edition_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
@@ -31,11 +31,11 @@ class _TreatmentListState extends State<TreatmentList> {
     });
   }
 
-  Future<void> _didSelectAction(Map<String, int> selection) async {
+  Future<void> _didSelectAction(Map<String, Treatment> selection) async {
     if (selection.keys.first == EDIT) {
-      Navigator.of(context).push(DefaultPageRouter(widget: TreatmentList()));
+      Navigator.of(context).push(DefaultPageRouter(widget: TreatmentEdit(treatment: selection.values.first)));
     } else if (selection.keys.first == DELETE) {
-      final bool isValid = await widget.service.deleteTreatment(selection.values.first);
+      final bool isValid = await widget.service.deleteTreatment(selection.values.first.id);
 
       if (isValid) {
         _showDialog(context, "Excluído com sucesso", "O tratamento foi excluído com sucesso!");
@@ -109,8 +109,8 @@ class _TreatmentListState extends State<TreatmentList> {
                               onSelected: _didSelectAction,
                               itemBuilder: (BuildContext context) {
                                 return ACTIONS.map((String action) {
-                                  return PopupMenuItem<Map<String, int>>(
-                                    value: {action: treatment.id},
+                                  return PopupMenuItem<Map<String, Treatment>>(
+                                    value: {action: treatment},
                                     child: Row(
                                       children: [
                                         Padding(
@@ -146,7 +146,7 @@ class _TreatmentListState extends State<TreatmentList> {
         child: Container(height: 40.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => print("oi")),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TreatmentEdit())),
         tooltip: 'Criar um tratamento',
         child: const Icon(Icons.add),
       ),
