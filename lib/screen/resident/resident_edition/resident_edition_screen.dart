@@ -121,11 +121,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   }
                                   return null;
                                 },
-                                onChanged: (value) {
-                                  setState(() {
-                                    _nameController.text = value;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Nome *',
@@ -136,11 +131,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: TextFormField(
                                 controller: _socialNameController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _socialNameController.text = value;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Nome social',
@@ -151,11 +141,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: TextFormField(
                                 controller: _nicknameController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _nicknameController.text = value;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Apelido',
@@ -172,11 +157,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   }
                                   return null;
                                 },
-                                onChanged: (value) {
-                                  setState(() {
-                                    _cpfController.text = value;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'CPF *',
@@ -192,11 +172,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                                     return 'Por favor, insira o RG';
                                   }
                                   return null;
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    _rgController.text = value;
-                                  });
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
@@ -351,11 +326,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   }
                                   return null;
                                 },
-                                onChanged: (value) {
-                                  setState(() {
-                                    _inscriptionController.text = value;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Inscrição do plano de saúde *',
@@ -366,11 +336,6 @@ class _ResidentEditState extends State<ResidentEdit> {
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: TextFormField(
                                 controller: _observationController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _observationController.text = value;
-                                  });
-                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Observação do plano de saúde',
