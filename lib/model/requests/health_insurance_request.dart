@@ -1,4 +1,4 @@
-import 'package:amparo_app/model/enums/health_insurance_type.dart';
+import '../enums/health_insurance_type.dart';
 
 class HealthInsuranceRequest {
   final HealthInsuranceType healthInsuranceType;

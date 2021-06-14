@@ -6,6 +6,7 @@ import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 class ResidentList extends StatefulWidget {
   final ResidentHttpService service = ResidentHttpService();
@@ -16,8 +17,9 @@ class ResidentList extends StatefulWidget {
   _ResidentListState createState() => _ResidentListState();
 }
 
-class _ResidentListState extends State<ResidentList> {
-  late Future<List<Resident>> residentList;
+class _ResidentListState extends State<ResidentList> with RouteAware, RouteObserverMixin {
+  late Future<List<Resident>>? residentList;
+
 
   @override
   void initState() {
@@ -27,6 +29,15 @@ class _ResidentListState extends State<ResidentList> {
 
   void refreshList() {
     setState(() {
+      residentList = null;
+      residentList = widget.service.getResidents();
+    });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      residentList = null;
       residentList = widget.service.getResidents();
     });
   }
@@ -145,8 +156,7 @@ class _ResidentListState extends State<ResidentList> {
         child: Container(height: 40.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ResidentEdit())),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResidentEdit())),
         tooltip: 'Criar um residente',
         child: const Icon(Icons.add),
       ),

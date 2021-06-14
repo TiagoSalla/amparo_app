@@ -1,9 +1,9 @@
 import '../enums/gender.dart';
 import '../enums/marital_status.dart';
 import '../enums/race.dart';
-import 'package:intl/intl.dart';
-
 import 'health_insurance_request.dart';
+
+import 'package:intl/intl.dart';
 
 class ResidentRequest {
   final String name;

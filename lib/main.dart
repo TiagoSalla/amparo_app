@@ -1,8 +1,15 @@
 import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [RouteObserverProvider()],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,6 +24,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.blueAccent,
           cursorColor: Colors.blueAccent),
+      navigatorObservers: [RouteObserverProvider.of(context)],
       home: Scaffold(
         body: Center(
           child: AsylumSelection(),
