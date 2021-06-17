@@ -1,4 +1,5 @@
-import 'package:amparo_app/components/drawer/custom_drawer.dart';
+import '../../components/drawer/custom_drawer.dart';
+import '../../utils/strings/texts.dart';
 import 'package:flutter/material.dart';
 
 class About extends StatelessWidget {
@@ -47,7 +48,7 @@ class About extends StatelessWidget {
                       'História do Amparo',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         fontFamily: 'SF Pro',
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -55,12 +56,8 @@ class About extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 3, bottom: 4, top: 6),
-                      child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus commodo viverra maecenas accumsan.'
-                        ' Mus mauris vitae ultricies leo integer malesuada. Congue mauris rhoncus aenean vel elit scelerisque mauris pellentesque. Urna condimentum mattis pellentesque'
-                        ' id nibh tortor id aliquet. Tristique senectus et netus et. Laoreet suspendisse interdum consectetur libero id faucibus. Condimentum id venenatis a condimentum '
-                        'vitae sapien pellentesque habitant morbi. Turpis egestas maecenas pharetra convallis posuere morbi. Sociis natoque penatibus et magnis dis parturient.',
-                        textAlign: TextAlign.justify,
+                      child: Text( ABOUT_AMPARO,
+                        textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16, fontFamily: 'SF Pro Medium', color: Colors.black),
                       ),
                     )

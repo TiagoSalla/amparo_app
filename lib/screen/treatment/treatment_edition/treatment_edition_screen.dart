@@ -1,9 +1,12 @@
 import 'package:amparo_app/model/requests/treatment_request.dart';
+import 'package:amparo_app/model/responses/medicine.dart';
 import 'package:amparo_app/model/responses/professional.dart';
 import 'package:amparo_app/model/responses/resident.dart';
 import 'package:amparo_app/model/responses/treatment_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../../network/treatment_http_service.dart';
 import '../../../model/responses/treatment.dart';
@@ -78,7 +81,9 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                                       child: DropdownButtonFormField<String>(
-                                        value: _residentIdValue.toString(),
+                                        value: treatmentOptions.residentList
+                                            .firstWhereOrNull((element) => element.id == _residentIdValue)
+                                            ?.name,
                                         onChanged: (newValue) {
                                           if (newValue != null) {
                                             setState(() {
@@ -106,7 +111,9 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                                       child: DropdownButtonFormField<String>(
-                                        value: _professionalIdValue.toString(),
+                                        value: treatmentOptions.professionalList
+                                            .firstWhereOrNull((element) => element.id == _professionalIdValue)
+                                            ?.name,
                                         onChanged: (newValue) {
                                           if (newValue != null) {
                                             setState(() {
@@ -133,30 +140,34 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                                      child: DropdownButtonFormField<String>(
-                                        value: _medicineIdListValue!.first.toString(),
-                                        onChanged: (newValue) {
-                                          if (newValue != null) {
-                                            setState(() {
-                                              _medicineIdListValue = newValue as List<int>;
-                                            });
-                                          }
-                                        },
-                                        items: MaritalStatus.values
-                                            .map<DropdownMenuItem<String>>((MaritalStatus maritalStatus) {
-                                          return DropdownMenuItem(
-                                              value: maritalStatus.description, child: Text(maritalStatus.description));
-                                        }).toList(),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Por favor, selecione os medicamentos';
-                                          }
-                                          return null;
-                                        },
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: 'Medicamentos *',
+                                      child: MultiSelectDialogField(
+                                        initialValue: widget.treatment?.medicineList ?? [],
+                                        items: treatmentOptions.medicineList
+                                            .map((medicine) => MultiSelectItem<Medicine>(medicine, medicine.name))
+                                            .toList(),
+                                        title: Text("Medicamentos"),
+                                        selectedColor: Colors.blue,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 1,
+                                          ),
                                         ),
+                                        buttonIcon: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                        buttonText: Text(
+                                          "Medicamentos",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        onConfirm: (results) {
+                                          //_selectedAnimals = results;
+                                        },
                                       ),
                                     ),
                                     Text(
