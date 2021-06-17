@@ -1,5 +1,6 @@
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
 import 'package:amparo_app/screen/medicine/medicine_detail/medicine_detail_screen.dart';
+import 'package:amparo_app/screen/medicine/medicine_edition/medicine_edition_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/network/medicine_http_service.dart';
@@ -146,7 +147,7 @@ class _MedicineListState extends State<MedicineList>{
         child: Container(height: 40.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => print("professional")),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MedicineEdit())),
         tooltip: 'Criar um profissional',
         child: const Icon(Icons.add),
       ),
