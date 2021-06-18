@@ -1,85 +1,74 @@
+import 'package:amparo_app/model/enums/administration_route.dart';
+import 'package:amparo_app/model/enums/frequency_type.dart';
+import 'package:amparo_app/model/enums/quantity_type.dart';
+import 'package:amparo_app/model/requests/dosage_request.dart';
+import 'package:amparo_app/model/requests/medicine_request.dart';
+import 'package:amparo_app/model/responses/medicine.dart';
+import 'package:amparo_app/network/medicine_http_service.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../network/resident_http_service.dart';
-import '../../../model/requests/health_insurance_request.dart';
-import '../../../model/requests/resident_request.dart';
-import '../../../model/responses/resident.dart';
-import '../../../model/enums/health_insurance_type.dart';
-import '../../../model/enums/marital_status.dart';
-import '../../../model/enums/gender.dart';
-import '../../../model/enums/race.dart';
+class MedicineEdit extends StatefulWidget {
+  final MedicineHttpService medicineService = MedicineHttpService();
+  final Medicine? medicine;
 
-class ResidentEdit extends StatefulWidget {
-  final ResidentHttpService residentService = ResidentHttpService();
-  final Resident? resident;
-
-  ResidentEdit({Key? key, this.resident}) : super(key: key);
+  MedicineEdit({Key? key, this.medicine}) : super(key: key);
 
   @override
-  _ResidentEditState createState() => _ResidentEditState();
+  _MedicineEditState createState() => _MedicineEditState();
 }
 
-class _ResidentEditState extends State<ResidentEdit> {
-  final GlobalKey<FormState> _residentFormKey = GlobalKey<FormState>();
+class _MedicineEditState extends State<MedicineEdit> {
+  final GlobalKey<FormState> _medicineFormKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
-  late TextEditingController _socialNameController;
-  late TextEditingController _nicknameController;
-  late TextEditingController _cpfController;
-  late TextEditingController _rgController;
-  late Race? _raceValue;
-  late Gender? _genderValue;
-  late MaritalStatus? _maritalStatusValue;
-  late DateTime? _birthDateValue;
-  late TextEditingController _birthDateController;
-  late HealthInsuranceType? _healthInsuranceType;
-  late TextEditingController _inscriptionController;
-  late TextEditingController _observationController;
+  late TextEditingController _laboratoryController;
+  late TextEditingController _quantityController;
+  late QuantityType? _quantityTypeValue;
+  late TextEditingController _frequencyController;
+  late FrequencyType? _frequencyType;
+  late AdministrationRoute? _administrationRouteValue;
+  late DateTime? _dueDateValue;
+  late TextEditingController _dueDateController;
+  late bool? _statusValue;
   bool _callingAPI = false;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.resident?.name);
-    _socialNameController = TextEditingController(text: widget.resident?.socialName);
-    _nicknameController = TextEditingController(text: widget.resident?.nickname);
-    _cpfController = TextEditingController(text: widget.resident?.cpf);
-    _rgController = TextEditingController(text: widget.resident?.rg);
-    _raceValue = widget.resident?.race;
-    _genderValue = widget.resident?.gender;
-    _maritalStatusValue = widget.resident?.maritalStatus;
-    _birthDateValue = widget.resident?.birthDate != null ? DateTime.parse(widget.resident!.birthDate) : null;
-    _birthDateController =
-        TextEditingController(text: _birthDateValue != null ? DateFormat("dd/MM/yyyy").format(_birthDateValue!) : "");
-    _healthInsuranceType = widget.resident?.healthInsurance.healthInsuranceType;
-    _inscriptionController = TextEditingController(text: widget.resident?.healthInsurance.inscription);
-    _observationController = TextEditingController(text: widget.resident?.healthInsurance.observation);
+    _nameController = TextEditingController(text: widget.medicine?.name);
+    _laboratoryController = TextEditingController(text: widget.medicine?.laboratory);
+    _quantityController = TextEditingController(text: widget.medicine?.dosage.quantity.toString());
+    _quantityTypeValue = widget.medicine?.dosage.quantityType;
+    _frequencyController = TextEditingController(text: widget.medicine?.dosage.frequency.toString());
+    _frequencyType = widget.medicine?.dosage.frequencyType;
+    _administrationRouteValue = widget.medicine?.dosage.administrationRoute;
+    _dueDateValue = widget.medicine?.dueDate != null ? DateTime.parse(widget.medicine!.dueDate) : null;
+    _dueDateController =
+        TextEditingController(text: _dueDateValue != null ? DateFormat("dd/MM/yyyy").format(_dueDateValue!) : "");
+    _statusValue = widget.medicine?.statusActive;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _socialNameController.dispose();
-    _nicknameController.dispose();
-    _cpfController.dispose();
-    _rgController.dispose();
-    _birthDateController.dispose();
-    _inscriptionController.dispose();
-    _observationController.dispose();
+    _laboratoryController.dispose();
+    _quantityController.dispose();
+    _frequencyController.dispose();
+    _dueDateController.dispose();
     super.dispose();
   }
 
   String? _validateDate() {
-    if ((_birthDateValue == null)) {
+    if ((_dueDateValue == null)) {
       return null;
     }
 
-    if (_birthDateValue!.year < DateTime.now().year) {
+    if (_dueDateValue!.year > DateTime.now().year) {
       return null;
-    } else if (_birthDateValue!.month < DateTime.now().month) {
+    } else if (_dueDateValue!.month > DateTime.now().month) {
       return null;
-    } else if (_birthDateValue!.day < DateTime.now().day) {
+    } else if (_dueDateValue!.day > DateTime.now().day) {
       return null;
     }
     return 'Data inválida';
@@ -90,7 +79,7 @@ class _ResidentEditState extends State<ResidentEdit> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.resident != null ? "Edição de residente" : "Criação de residente",
+          widget.medicine != null ? "Edição de medicamento" : "Criação de medicamento",
           style: TextStyle(fontFamily: 'SF Pro', fontSize: 20.0, color: Colors.white),
         ),
         backgroundColor: Color(0xFF1D6AFF),
@@ -110,11 +99,11 @@ class _ResidentEditState extends State<ResidentEdit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Informações do Residente",
+                        "Informações do Medicamento",
                         style: TextStyle(fontFamily: 'SF Pro', fontSize: 24.0, color: Colors.black87),
                       ),
                       Form(
-                        key: _residentFormKey,
+                        key: _medicineFormKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -137,134 +126,135 @@ class _ResidentEditState extends State<ResidentEdit> {
                             Padding(
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: TextFormField(
-                                controller: _socialNameController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Nome social',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                              child: TextFormField(
-                                controller: _nicknameController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Apelido',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                              child: TextFormField(
-                                controller: _cpfController,
+                                controller: _laboratoryController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira o CPF';
+                                    return 'Por favor, insira o laboratório';
                                   }
                                   return null;
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'CPF *',
+                                  labelText: 'Laboratório *',
                                 ),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: TextFormField(
-                                controller: _rgController,
+                                controller: _quantityController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira o RG';
+                                    return 'Por favor, insira a quantidade';
                                   }
                                   return null;
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'RG *',
+                                  labelText: 'Quantidade *',
                                 ),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: DropdownButtonFormField<String>(
-                                value: _raceValue?.description,
+                                value: _quantityTypeValue?.description,
                                 onChanged: (newValue) {
                                   if (newValue != null) {
                                     setState(() {
-                                      _raceValue = Race.values.firstWhere((race) => race.description == newValue);
+                                      _quantityTypeValue = QuantityType.values
+                                          .firstWhere((quantityType) => quantityType.description == newValue);
                                     });
                                   }
                                 },
-                                items: Race.values.map<DropdownMenuItem<String>>((Race race) {
-                                  return DropdownMenuItem(value: race.description, child: Text(race.description));
+                                items: QuantityType.values.map<DropdownMenuItem<String>>((QuantityType quantityType) {
+                                  return DropdownMenuItem(
+                                      value: quantityType.description, child: Text(quantityType.description));
                                 }).toList(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira a raça';
+                                    return 'Por favor, insira o tipo da quantidade';
                                   }
                                   return null;
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Raça *',
+                                  labelText: 'Tipo da Quantidade *',
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
+                              child: TextFormField(
+                                controller: _frequencyController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Por favor, insira a frequência';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Frequência *',
                                 ),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: DropdownButtonFormField<String>(
-                                value: _genderValue?.description,
+                                value: _frequencyType?.description,
                                 onChanged: (newValue) {
                                   if (newValue != null) {
                                     setState(() {
-                                      _genderValue =
-                                          Gender.values.firstWhere((gender) => gender.description == newValue);
-                                    });
-                                  }
-                                },
-                                items: Gender.values.map<DropdownMenuItem<String>>((Gender gender) {
-                                  return DropdownMenuItem(value: gender.description, child: Text(gender.description));
-                                }).toList(),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira o sexo';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Sexo *',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                              child: DropdownButtonFormField<String>(
-                                value: _maritalStatusValue?.description,
-                                onChanged: (newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      _maritalStatusValue = MaritalStatus.values
-                                          .firstWhere((maritalStatus) => maritalStatus.description == newValue);
+                                      _frequencyType = FrequencyType.values
+                                          .firstWhere((frequencyType) => frequencyType.description == newValue);
                                     });
                                   }
                                 },
                                 items:
-                                    MaritalStatus.values.map<DropdownMenuItem<String>>((MaritalStatus maritalStatus) {
+                                    FrequencyType.values.map<DropdownMenuItem<String>>((FrequencyType frequencyType) {
                                   return DropdownMenuItem(
-                                      value: maritalStatus.description, child: Text(maritalStatus.description));
+                                      value: frequencyType.description, child: Text(frequencyType.description));
                                 }).toList(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira o estado civil';
+                                    return 'Por favor, insira o tipo da frequência';
                                   }
                                   return null;
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Estado civil *',
+                                  labelText: 'Tipo da Frequência *',
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
+                              child: DropdownButtonFormField<String>(
+                                value: _administrationRouteValue?.description,
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    setState(() {
+                                      _administrationRouteValue = AdministrationRoute.values.firstWhere(
+                                          (administrationRoute) => administrationRoute.description == newValue);
+                                    });
+                                  }
+                                },
+                                items: AdministrationRoute.values
+                                    .map<DropdownMenuItem<String>>((AdministrationRoute administratioRoute) {
+                                  return DropdownMenuItem(
+                                      value: administratioRoute.description,
+                                      child: Text(administratioRoute.description));
+                                }).toList(),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Por favor, insira a via de administração';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Via de Administração *',
                                 ),
                               ),
                             ),
@@ -274,17 +264,17 @@ class _ResidentEditState extends State<ResidentEdit> {
                                 onTap: () => _selectDate(context),
                                 child: AbsorbPointer(
                                   child: TextFormField(
-                                    controller: _birthDateController,
+                                    controller: _dueDateController,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Por favor, insira a data de nascimento';
+                                        return 'Por favor, insira a data de vencimento';
                                       }
                                       return null;
                                     },
                                     decoration: InputDecoration(
                                       errorText: _validateDate(),
                                       border: OutlineInputBorder(),
-                                      labelText: 'Data de nascimento *',
+                                      labelText: 'Data de vencimento *',
                                       suffixIcon: Icon(
                                         Icons.arrow_drop_down,
                                         color: Colors.grey.shade700,
@@ -297,55 +287,26 @@ class _ResidentEditState extends State<ResidentEdit> {
                             Padding(
                               padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                               child: DropdownButtonFormField<String>(
-                                value: _healthInsuranceType?.description,
+                                value: _statusValue != null && _statusValue == true ? "Ativo" : "Inativo",
                                 onChanged: (newValue) {
                                   if (newValue != null) {
                                     setState(() {
-                                      _healthInsuranceType = HealthInsuranceType.values
-                                          .firstWhere((healthInsurance) => healthInsurance.description == newValue);
+                                      _statusValue = newValue == "Ativo" ? true : false;
                                     });
                                   }
                                 },
-                                items: HealthInsuranceType.values
-                                    .map<DropdownMenuItem<String>>((HealthInsuranceType healthInsurance) {
-                                  return DropdownMenuItem(
-                                      value: healthInsurance.description, child: Text(healthInsurance.description));
+                                items: ["Ativo", "Inativo"].map<DropdownMenuItem<String>>((String active) {
+                                  return DropdownMenuItem(value: active, child: Text(active));
                                 }).toList(),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira o plano de saúde';
+                                    return 'Por favor, insira o status';
                                   }
                                   return null;
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Plano de saúde *',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                              child: TextFormField(
-                                controller: _inscriptionController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Por favor, insira a inscrição';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Inscrição do plano de saúde *',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                              child: TextFormField(
-                                controller: _observationController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Observação do plano de saúde',
+                                  labelText: 'Status *',
                                 ),
                               ),
                             ),
@@ -360,21 +321,18 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   padding: const EdgeInsets.only(left: 8.0, top: 12.0, right: 16.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      _residentFormKey.currentState!.reset();
+                                      _medicineFormKey.currentState!.reset();
                                       setState(() {
                                         _nameController.text = "";
-                                        _socialNameController.text = "";
-                                        _nicknameController.text = "";
-                                        _cpfController.text = "";
-                                        _rgController.text = "";
-                                        _raceValue = null;
-                                        _genderValue = null;
-                                        _maritalStatusValue = null;
-                                        _birthDateValue = null;
-                                        _birthDateController.text = "";
-                                        _healthInsuranceType = null;
-                                        _inscriptionController.text = "";
-                                        _observationController.text = "";
+                                        _laboratoryController.text = "";
+                                        _quantityController.text = "";
+                                        _quantityTypeValue = null;
+                                        _frequencyController.text = "";
+                                        _frequencyType = null;
+                                        _administrationRouteValue = null;
+                                        _dueDateController.text = "";
+                                        _dueDateValue = null;
+                                        _statusValue = null;
                                       });
                                     },
                                     child: const Text('Limpar',
@@ -386,51 +344,44 @@ class _ResidentEditState extends State<ResidentEdit> {
                                   padding: const EdgeInsets.only(left: 16.0, top: 12.0, right: 8.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      if (_residentFormKey.currentState!.validate()) {
-                                        final request = ResidentRequest(
+                                      if (_medicineFormKey.currentState!.validate()) {
+                                        final dosageRequest = DosageRequest(
+                                            quantity: int.parse(_quantityController.text),
+                                            quantityType: _quantityTypeValue!,
+                                            frequency: int.parse(_frequencyController.text),
+                                            frequencyType: _frequencyType!,
+                                            administrationRoute: _administrationRouteValue!);
+                                        final request = MedicineRequest(
                                             name: _nameController.text,
-                                            socialName:
-                                                _socialNameController.text.isEmpty ? null : _socialNameController.text,
-                                            nickname:
-                                                _nicknameController.text.isEmpty ? null : _nicknameController.text,
-                                            cpf: _cpfController.text,
-                                            rg: _rgController.text,
-                                            race: _raceValue!,
-                                            gender: _genderValue!,
-                                            maritalStatus: _maritalStatusValue!,
-                                            birthDate: _birthDateValue!,
-                                            healthInsurance: HealthInsuranceRequest(
-                                              healthInsuranceType: _healthInsuranceType!,
-                                              inscription: _inscriptionController.text,
-                                              observation: _observationController.text.isEmpty
-                                                  ? null
-                                                  : _observationController.text,
-                                            ));
+                                            dosage: dosageRequest,
+                                            laboratory: _laboratoryController.text,
+                                            dueDate: _dueDateValue!,
+                                            statusActive: _statusValue!);
                                         setState(() {
                                           _callingAPI = true;
                                         });
-                                        if (widget.resident != null) {
+                                        if (widget.medicine != null) {
                                           var result =
-                                              await widget.residentService.update(widget.resident!.id, request);
+                                              await widget.medicineService.update(widget.medicine!.id, request);
                                           setState(() {
                                             _callingAPI = false;
                                           });
                                           if (result) {
                                             Navigator.of(context).pop();
-                                            _showDialog(context, "Residente atualizado!",
-                                                "O residente foi atualizado com sucesso.");
+                                            _showDialog(context, "Medicamento atualizado!",
+                                                "O medicamento foi atualizado com sucesso.");
                                           } else {
                                             _showDialog(context, "Ocorreu um erro", "Tente salvar novamente.");
                                           }
                                         } else {
-                                          var result = await widget.residentService.create(request);
+                                          var result = await widget.medicineService.create(request);
                                           setState(() {
                                             _callingAPI = false;
                                           });
                                           if (result) {
                                             Navigator.of(context).pop();
-                                            _showDialog(
-                                                context, "Residente criado!", "O residente foi criado com sucesso.");
+                                            _showDialog(context, "Medicamento criado!",
+                                                "O medicamento foi criado com sucesso.");
                                           } else {
                                             _showDialog(context, "Ocorreu um erro!", "Tente salvar novamente.");
                                           }
@@ -468,13 +419,13 @@ class _ResidentEditState extends State<ResidentEdit> {
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: _birthDateValue ?? DateTime.now(),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(DateTime.now().year + 1));
-    if (picked != null && picked != _birthDateValue)
+        initialDate: _dueDateValue ?? DateTime.now(),
+        firstDate: DateTime(DateTime.now().year),
+        lastDate: DateTime(DateTime.now().year + 100));
+    if (picked != null && picked != _dueDateValue)
       setState(() {
-        _birthDateValue = picked;
-        _birthDateController.text = DateFormat('dd/MM/yyyy').format(picked);
+        _dueDateValue = picked;
+        _dueDateController.text = DateFormat('dd/MM/yyyy').format(picked);
       });
   }
 

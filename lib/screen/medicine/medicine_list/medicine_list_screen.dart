@@ -1,6 +1,6 @@
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
 import 'package:amparo_app/screen/medicine/medicine_detail/medicine_detail_screen.dart';
-import 'package:amparo_app/utils/page_routers/default_page_router.dart';
+import 'package:amparo_app/screen/medicine/medicine_edition/medicine_edition_screen.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/network/medicine_http_service.dart';
 import 'package:amparo_app/model/responses/medicine.dart';
@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 class MedicineList extends StatefulWidget {
-
   final MedicineHttpService service = MedicineHttpService();
 
   MedicineList({Key? key}) : super(key: key);
@@ -40,15 +39,17 @@ class _MedicineListState extends State<MedicineList> with RouteAware, RouteObser
     });
   }
 
-  Future<void> _didSelectAction(Map<String, int> selection) async {
+  Future<void> _didSelectAction(Map<String, Medicine> selection) async {
     if (selection.keys.first == EDIT) {
-      Navigator.of(context).push(DefaultPageRouter(widget: MedicineList()));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MedicineEdit(
+                medicine: selection.values.first,
+              )));
     } else if (selection.keys.first == DELETE) {
-      final bool isValid = await widget.service.deleteMedicine(selection.values.first);
+      final bool isValid = await widget.service.deleteMedicine(selection.values.first.id);
 
       if (isValid) {
         _showDialog(context, "Excluído com sucesso", "O medicamento foi excluído com sucesso!");
-
         refreshList();
       } else {
         _showDialog(context, "Falha ao excluir", "Não foi possível excluir o medicamento. Tente novamente.");
@@ -96,7 +97,6 @@ class _MedicineListState extends State<MedicineList> with RouteAware, RouteObser
               )),
         ],
       ),
-
       drawer: CustomDrawer(),
       backgroundColor: Color.fromRGBO(245, 245, 245, 1),
       body: FutureBuilder(
@@ -111,38 +111,38 @@ class _MedicineListState extends State<MedicineList> with RouteAware, RouteObser
                 children: medicines
                     .map(
                       (Medicine medicine) => Card(
-                    child: ListTile(
-                        title: Text(medicine.name),
-                        trailing: PopupMenuButton(
-                          tooltip: "Abrir menu de opções",
-                          onSelected: _didSelectAction,
-                          itemBuilder: (BuildContext context) {
-                            return ACTIONS.map((String action) {
-                              return PopupMenuItem<Map<String, int>>(
-                                value: {action: medicine.id},
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      child: Icon(
-                                        action == EDIT ? Icons.edit : Icons.delete,
-                                        color: action == EDIT ? Colors.amber : Colors.redAccent,
-                                        size: 20,
-                                      ),
-                                      padding: EdgeInsets.only(right: 8),
+                        child: ListTile(
+                            title: Text(medicine.name),
+                            trailing: PopupMenuButton(
+                              tooltip: "Abrir menu de opções",
+                              onSelected: _didSelectAction,
+                              itemBuilder: (BuildContext context) {
+                                return ACTIONS.map((String action) {
+                                  return PopupMenuItem<Map<String, Medicine>>(
+                                    value: {action: medicine},
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          child: Icon(
+                                            action == EDIT ? Icons.edit : Icons.delete,
+                                            color: action == EDIT ? Colors.amber : Colors.redAccent,
+                                            size: 20,
+                                          ),
+                                          padding: EdgeInsets.only(right: 8),
+                                        ),
+                                        Text(action)
+                                      ],
                                     ),
-                                    Text(action)
-                                  ],
-                                ),
-                              );
-                            }).toList();
-                          },
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                          icon: Icon(Icons.more_vert),
-                        ),
-                        onTap: () => Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) => MedicineDetail(medicine: medicine)))),
-                  ),
-                )
+                                  );
+                                }).toList();
+                              },
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                              icon: Icon(Icons.more_vert),
+                            ),
+                            onTap: () => Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) => MedicineDetail(medicine: medicine)))),
+                      ),
+                    )
                     .toList(),
               );
             }
@@ -155,14 +155,11 @@ class _MedicineListState extends State<MedicineList> with RouteAware, RouteObser
         child: Container(height: 40.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => print("professional")),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MedicineEdit())),
         tooltip: 'Criar um profissional',
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-
     );
   }
 }
-
-
