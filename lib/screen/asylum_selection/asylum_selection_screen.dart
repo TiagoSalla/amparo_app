@@ -11,7 +11,7 @@ class AsylumSelection extends StatefulWidget {
 
 class _AsylumSelection extends State<AsylumSelection> {
   List<String> asylums = ['Lar São José', 'Lar São Franscisco', 'Asilo Vale dos Lírios'];
-  late String selectedAsylum = asylums.first;
+  String? selectedAsylum;
 
   void _dropDownItemSelected(String newItem) {
     setState(() {
@@ -20,7 +20,7 @@ class _AsylumSelection extends State<AsylumSelection> {
   }
 
   void _sendData(BuildContext context) {
-    Navigator.of(context).push(DefaultPageRouter(widget: Login(asylumName: selectedAsylum)));
+    Navigator.of(context).push(DefaultPageRouter(widget: Login(asylumName: selectedAsylum!)));
   }
 
   @override
@@ -86,7 +86,7 @@ class _AsylumSelection extends State<AsylumSelection> {
                       padding: const EdgeInsets.only(left: 10, bottom: 4, top: 20, right: 10),
                       child: DropdownButton<String>(
                         hint: Text(
-                          'Selecione uma casa de repouso',
+                          'Selecione uma casa de repouso                           ',
                           style: TextStyle(
                               color: Colors.black, fontSize: 16, fontFamily: 'SF Pro', fontWeight: FontWeight.bold),
                         ),

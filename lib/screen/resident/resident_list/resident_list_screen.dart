@@ -20,7 +20,6 @@ class ResidentList extends StatefulWidget {
 class _ResidentListState extends State<ResidentList> with RouteAware, RouteObserverMixin {
   late Future<List<Resident>>? residentList;
 
-
   @override
   void initState() {
     super.initState();

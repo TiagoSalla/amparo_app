@@ -1,9 +1,12 @@
 import 'package:amparo_app/model/requests/treatment_request.dart';
+import 'package:amparo_app/model/responses/medicine.dart';
 import 'package:amparo_app/model/responses/professional.dart';
 import 'package:amparo_app/model/responses/resident.dart';
 import 'package:amparo_app/model/responses/treatment_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../../network/treatment_http_service.dart';
 import '../../../model/responses/treatment.dart';
@@ -25,6 +28,7 @@ class _TreatmentEditState extends State<TreatmentEdit> {
   late int? _residentIdValue;
   late int? _professionalIdValue;
   late List<int>? _medicineIdListValue;
+  late int? _medicineCount;
   bool _callingAPI = false;
 
   @override
@@ -33,7 +37,8 @@ class _TreatmentEditState extends State<TreatmentEdit> {
     _treatmentOptions = widget.treatmentService.getOptions();
     _residentIdValue = widget.treatment?.residentId;
     _professionalIdValue = widget.treatment?.responsibleProfessional.id;
-    _medicineIdListValue = widget.treatment?.medicineList.map((medicine) => medicine.id).toList();
+    _medicineIdListValue = widget.treatment?.medicineList.map((e) => e.id).toList();
+    _medicineCount = _medicineIdListValue?.length;
   }
 
   @override
@@ -78,7 +83,10 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                                       child: DropdownButtonFormField<String>(
-                                        value: _residentIdValue.toString(),
+                                        value: treatmentOptions.residentList
+                                            .singleWhereOrNull((element) => element.id == _residentIdValue)
+                                            ?.id
+                                            .toString(),
                                         onChanged: (newValue) {
                                           if (newValue != null) {
                                             setState(() {
@@ -106,7 +114,10 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                                       child: DropdownButtonFormField<String>(
-                                        value: _professionalIdValue.toString(),
+                                        value: treatmentOptions.professionalList
+                                            .firstWhereOrNull((element) => element.id == _professionalIdValue)
+                                            ?.id
+                                            .toString(),
                                         onChanged: (newValue) {
                                           if (newValue != null) {
                                             setState(() {
@@ -133,30 +144,51 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                                      child: DropdownButtonFormField<String>(
-                                        value: _medicineIdListValue!.first.toString(),
-                                        onChanged: (newValue) {
-                                          if (newValue != null) {
-                                            setState(() {
-                                              _medicineIdListValue = newValue as List<int>;
-                                            });
-                                          }
-                                        },
-                                        items: MaritalStatus.values
-                                            .map<DropdownMenuItem<String>>((MaritalStatus maritalStatus) {
-                                          return DropdownMenuItem(
-                                              value: maritalStatus.description, child: Text(maritalStatus.description));
-                                        }).toList(),
+                                      child: MultiSelectDialogField(
+                                        initialValue: _medicineIdListValue != null && _medicineIdListValue!.isNotEmpty
+                                            ? treatmentOptions.medicineList
+                                                .whereIndexed(
+                                                    (index, element) => element.id == _medicineIdListValue![index])
+                                                .toList()
+                                            : [],
+                                        items: treatmentOptions.medicineList
+                                            .map((medicine) => MultiSelectItem<Medicine>(medicine, medicine.name))
+                                            .toList(),
+                                        title: Text("Medicamentos"),
+                                        selectedColor: Colors.blue,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        buttonIcon: Icon(
+                                          Icons.arrow_drop_down,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                        buttonText: Text(
+                                          _medicineIdListValue != null && _medicineIdListValue!.isNotEmpty
+                                              ? "$_medicineCount" + " medicamento(s) selecionado(s)"
+                                              : "Medicamentos *",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontSize: 16,
+                                          ),
+                                        ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Por favor, selecione os medicamentos';
+                                            return 'Por favor, selecione o(s) medicamento(s)';
                                           }
                                           return null;
                                         },
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: 'Medicamentos *',
-                                        ),
+                                        onConfirm: (results) {
+                                          setState(() {
+                                            List<Medicine> resultsCast = results.cast();
+                                            _medicineIdListValue = resultsCast.map((e) => e.id).toList();
+                                            _medicineCount = _medicineIdListValue?.length;
+                                          });
+                                        },
                                       ),
                                     ),
                                     Text(
@@ -174,7 +206,6 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                               setState(() {
                                                 _residentIdValue = null;
                                                 _professionalIdValue = null;
-                                                _medicineIdListValue = null;
                                               });
                                             },
                                             child: const Text('Limpar',
@@ -214,9 +245,9 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                                     _callingAPI = false;
                                                   });
                                                   if (result) {
+                                                    Navigator.of(context).pop();
                                                     _showDialog(context, "Tratamento criado!",
                                                         "O tratamento foi criado com sucesso.");
-                                                    Navigator.of(context).pop();
                                                   } else {
                                                     _showDialog(context, "Ocorreu um erro!", "Tente salvar novamente.");
                                                   }

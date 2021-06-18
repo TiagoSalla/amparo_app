@@ -428,9 +428,9 @@ class _ResidentEditState extends State<ResidentEdit> {
                                             _callingAPI = false;
                                           });
                                           if (result) {
+                                            Navigator.of(context).pop();
                                             _showDialog(
                                                 context, "Residente criado!", "O residente foi criado com sucesso.");
-                                            Navigator.of(context).pop();
                                           } else {
                                             _showDialog(context, "Ocorreu um erro!", "Tente salvar novamente.");
                                           }

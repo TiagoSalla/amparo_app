@@ -1,11 +1,11 @@
 import 'package:amparo_app/model/responses/responsible.dart';
 import 'package:amparo_app/network/responsible_http_service.dart';
-import 'package:amparo_app/screen/asylum_selection/asylum_selection_screen.dart';
 import 'package:amparo_app/screen/responsible/responsible_detail/responsible_detail_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 class ResponsibleList extends StatefulWidget {
   final ResponsibleHttpService service = ResponsibleHttpService();
@@ -16,8 +16,8 @@ class ResponsibleList extends StatefulWidget {
   _ResponsibleListState createState() => _ResponsibleListState();
 }
 
-class _ResponsibleListState extends State<ResponsibleList> {
-  late Future<List<Responsible>> responsibleList;
+class _ResponsibleListState extends State<ResponsibleList> with RouteAware, RouteObserverMixin {
+  late Future<List<Responsible>>? responsibleList;
 
   @override
   void initState() {
@@ -27,6 +27,14 @@ class _ResponsibleListState extends State<ResponsibleList> {
 
   void refreshList() {
     setState(() {
+      responsibleList = widget.service.getResponsibles();
+    });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      responsibleList = null;
       responsibleList = widget.service.getResponsibles();
     });
   }

@@ -5,6 +5,7 @@ import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/network/medicine_http_service.dart';
 import 'package:amparo_app/model/responses/medicine.dart';
 import 'package:flutter/material.dart';
+import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 class MedicineList extends StatefulWidget {
 
@@ -16,8 +17,8 @@ class MedicineList extends StatefulWidget {
   _MedicineListState createState() => _MedicineListState();
 }
 
-class _MedicineListState extends State<MedicineList>{
-  late Future<List<Medicine>> medicineList;
+class _MedicineListState extends State<MedicineList> with RouteAware, RouteObserverMixin {
+  late Future<List<Medicine>>? medicineList;
 
   @override
   void initState() {
@@ -27,6 +28,14 @@ class _MedicineListState extends State<MedicineList>{
 
   void refreshList() {
     setState(() {
+      medicineList = widget.service.getMedicines();
+    });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      medicineList = null;
       medicineList = widget.service.getMedicines();
     });
   }
