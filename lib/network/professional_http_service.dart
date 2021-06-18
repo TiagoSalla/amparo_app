@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:amparo_app/model/requests/login_request.dart';
+import 'package:amparo_app/model/requests/professional_request.dart';
 import 'package:amparo_app/model/responses/professional.dart';
 import 'package:http/http.dart';
 import 'package:amparo_app/utils/strings/routes.dart';
@@ -39,5 +40,27 @@ class ProfessionalHttpService {
       return true;
     }
     return false;
+  }
+
+  Future<bool> create(ProfessionalRequest professionalRequest) async {
+    Response response = await post(Uri.parse(PROFESSIONAL_PATH + CREATE_PATH),
+        headers: headers, body: jsonEncode(professionalRequest.toJson()));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> update(int id, ProfessionalRequest professionalRequest) async {
+    Response response = await put(Uri.parse(PROFESSIONAL_PATH + UPDATE_PATH + id.toString()),
+        headers: headers, body: jsonEncode(professionalRequest.toJson()));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
