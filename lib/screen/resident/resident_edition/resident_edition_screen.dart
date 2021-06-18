@@ -75,14 +75,14 @@ class _ResidentEditState extends State<ResidentEdit> {
       return null;
     }
 
-    if (_birthDateValue!.year > DateTime.now().year) {
-      return 'Data inválida';
-    } else if (_birthDateValue!.month > DateTime.now().month) {
-      return 'Data inválida';
-    } else if (_birthDateValue!.day > DateTime.now().day) {
-      return 'Data inválida';
+    if (_birthDateValue!.year < DateTime.now().year) {
+      return null;
+    } else if (_birthDateValue!.month < DateTime.now().month) {
+      return null;
+    } else if (_birthDateValue!.day < DateTime.now().day) {
+      return null;
     }
-    return null;
+    return 'Data inválida';
   }
 
   @override
