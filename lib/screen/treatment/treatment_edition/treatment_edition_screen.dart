@@ -28,6 +28,7 @@ class _TreatmentEditState extends State<TreatmentEdit> {
   late int? _residentIdValue;
   late int? _professionalIdValue;
   late List<int>? _medicineIdListValue;
+  late int? _medicineCount;
   bool _callingAPI = false;
 
   @override
@@ -36,7 +37,8 @@ class _TreatmentEditState extends State<TreatmentEdit> {
     _treatmentOptions = widget.treatmentService.getOptions();
     _residentIdValue = widget.treatment?.residentId;
     _professionalIdValue = widget.treatment?.responsibleProfessional.id;
-    _medicineIdListValue = widget.treatment?.medicineList.map((medicine) => medicine.id).toList();
+    _medicineIdListValue = widget.treatment?.medicineList.map((e) => e.id).toList();
+    _medicineCount = _medicineIdListValue?.length;
   }
 
   @override
@@ -82,8 +84,9 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                                       child: DropdownButtonFormField<String>(
                                         value: treatmentOptions.residentList
-                                            .firstWhereOrNull((element) => element.id == _residentIdValue)
-                                            ?.name,
+                                            .singleWhereOrNull((element) => element.id == _residentIdValue)
+                                            ?.id
+                                            .toString(),
                                         onChanged: (newValue) {
                                           if (newValue != null) {
                                             setState(() {
@@ -113,7 +116,8 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                       child: DropdownButtonFormField<String>(
                                         value: treatmentOptions.professionalList
                                             .firstWhereOrNull((element) => element.id == _professionalIdValue)
-                                            ?.name,
+                                            ?.id
+                                            .toString(),
                                         onChanged: (newValue) {
                                           if (newValue != null) {
                                             setState(() {
@@ -141,7 +145,12 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                                       child: MultiSelectDialogField(
-                                        initialValue: widget.treatment?.medicineList ?? [],
+                                        initialValue: _medicineIdListValue != null && _medicineIdListValue!.isNotEmpty
+                                            ? treatmentOptions.medicineList
+                                                .whereIndexed(
+                                                    (index, element) => element.id == _medicineIdListValue![index])
+                                                .toList()
+                                            : [],
                                         items: treatmentOptions.medicineList
                                             .map((medicine) => MultiSelectItem<Medicine>(medicine, medicine.name))
                                             .toList(),
@@ -159,14 +168,26 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                           color: Colors.grey.shade700,
                                         ),
                                         buttonText: Text(
-                                          "Medicamentos",
+                                          _medicineIdListValue != null && _medicineIdListValue!.isNotEmpty
+                                              ? "$_medicineCount" + " medicamento(s) selecionado(s)"
+                                              : "Medicamentos *",
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 16,
                                           ),
                                         ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Por favor, selecione o(s) medicamento(s)';
+                                          }
+                                          return null;
+                                        },
                                         onConfirm: (results) {
-                                          //_selectedAnimals = results;
+                                          setState(() {
+                                            List<Medicine> resultsCast = results.cast();
+                                            _medicineIdListValue = resultsCast.map((e) => e.id).toList();
+                                            _medicineCount = _medicineIdListValue?.length;
+                                          });
                                         },
                                       ),
                                     ),
@@ -185,7 +206,6 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                               setState(() {
                                                 _residentIdValue = null;
                                                 _professionalIdValue = null;
-                                                _medicineIdListValue = null;
                                               });
                                             },
                                             child: const Text('Limpar',
@@ -225,9 +245,9 @@ class _TreatmentEditState extends State<TreatmentEdit> {
                                                     _callingAPI = false;
                                                   });
                                                   if (result) {
+                                                    Navigator.of(context).pop();
                                                     _showDialog(context, "Tratamento criado!",
                                                         "O tratamento foi criado com sucesso.");
-                                                    Navigator.of(context).pop();
                                                   } else {
                                                     _showDialog(context, "Ocorreu um erro!", "Tente salvar novamente.");
                                                   }

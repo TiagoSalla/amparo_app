@@ -6,6 +6,7 @@ import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 class TreatmentList extends StatefulWidget {
   final TreatmentHttpService service = TreatmentHttpService();
@@ -16,8 +17,8 @@ class TreatmentList extends StatefulWidget {
   _TreatmentListState createState() => _TreatmentListState();
 }
 
-class _TreatmentListState extends State<TreatmentList> {
-  late Future<List<Treatment>> treatmentList;
+class _TreatmentListState extends State<TreatmentList> with RouteAware, RouteObserverMixin {
+  late Future<List<Treatment>>? treatmentList;
 
   @override
   void initState() {
@@ -27,6 +28,14 @@ class _TreatmentListState extends State<TreatmentList> {
 
   void refreshList() {
     setState(() {
+      treatmentList = widget.service.getTreatments();
+    });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      treatmentList = null;
       treatmentList = widget.service.getTreatments();
     });
   }
