@@ -1,7 +1,7 @@
-import 'package:amparo_app/network/professional_http_service.dart';
-import 'package:amparo_app/screen/about/about_screen.dart';
-import 'package:amparo_app/utils/page_routers/default_page_router.dart';
-import 'package:amparo_app/network/session.dart';
+import '../../network/professional_http_service.dart';
+import '../../screen/about/about_screen.dart';
+import '../../utils/page_routers/default_page_router.dart';
+import '../../network/session.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -75,7 +75,7 @@ class _Login extends State<Login> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  'Bem-vindo ao ' + widget.asylumName,
+                  'Bem-vindo ao\n' + widget.asylumName,
                   textAlign: TextAlign.center,
                   style:
                       TextStyle(fontSize: 34, fontFamily: 'SF Pro', fontWeight: FontWeight.w500, color: Colors.white),
@@ -157,17 +157,6 @@ class _Login extends State<Login> {
                         onChanged: (password) {
                           this._password = password;
                         },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-                      child: GestureDetector(
-                        child: Text(
-                          'Esqueceu a senha?',
-                          style: TextStyle(
-                              fontFamily: 'SF Pro Medium', color: Color(0xFF9093A3), fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.end,
-                        ),
                       ),
                     ),
                     Padding(

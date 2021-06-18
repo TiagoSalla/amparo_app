@@ -24,8 +24,8 @@ class TreatmentHttpService {
     Response response = await get(Uri.parse(TREATMENT_PATH + OPTIONS_PATH));
 
     if (response.statusCode == 200) {
-      Iterable body = json.decode(utf8.decode(response.bodyBytes));
-      TreatmentOptions treatmentOptions = TreatmentOptions.fromJson(body.single);
+      var body = json.decode(utf8.decode(response.bodyBytes));
+      TreatmentOptions treatmentOptions = TreatmentOptions.fromJson(body);
       return treatmentOptions;
     } else {
       throw Exception('Failed to load treatment options');

@@ -5,6 +5,7 @@ import 'package:amparo_app/screen/professional/professional_detail/professional_
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:flutter/material.dart';
+import 'package:route_observer_mixin/route_observer_mixin.dart';
 
 class ProfessionalList extends StatefulWidget {
 
@@ -17,8 +18,8 @@ class ProfessionalList extends StatefulWidget {
   _ProfessionalListState createState() => _ProfessionalListState();
 }
 
-class _ProfessionalListState extends State<ProfessionalList> {
-  late Future<List<Professional>> professionalList;
+class _ProfessionalListState extends State<ProfessionalList> with RouteAware, RouteObserverMixin {
+  late Future<List<Professional>>? professionalList;
 
   @override
   void initState() {
@@ -28,6 +29,14 @@ class _ProfessionalListState extends State<ProfessionalList> {
 
   void refreshList() {
     setState(() {
+      professionalList = widget.service.getProfessionals();
+    });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      professionalList = null;
       professionalList = widget.service.getProfessionals();
     });
   }

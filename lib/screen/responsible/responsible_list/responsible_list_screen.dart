@@ -1,58 +1,56 @@
-import 'package:amparo_app/model/responses/resident.dart';
-import 'package:amparo_app/network/resident_http_service.dart';
-import 'package:amparo_app/screen/resident/resident_detail/resident_detail_screen.dart';
-import 'package:amparo_app/screen/resident/resident_edition/resident_edition_screen.dart';
+import 'package:amparo_app/model/responses/responsible.dart';
+import 'package:amparo_app/network/responsible_http_service.dart';
+import 'package:amparo_app/screen/responsible/responsible_detail/responsible_detail_screen.dart';
 import 'package:amparo_app/utils/page_routers/default_page_router.dart';
 import 'package:amparo_app/utils/strings/texts.dart';
 import 'package:amparo_app/components/drawer/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:route_observer_mixin/route_observer_mixin.dart';
 
-class ResidentList extends StatefulWidget {
-  final ResidentHttpService service = ResidentHttpService();
+class ResponsibleList extends StatefulWidget {
+  final ResponsibleHttpService service = ResponsibleHttpService();
 
-  ResidentList({Key? key}) : super(key: key);
+  ResponsibleList({Key? key}) : super(key: key);
 
   @override
-  _ResidentListState createState() => _ResidentListState();
+  _ResponsibleListState createState() => _ResponsibleListState();
 }
 
-class _ResidentListState extends State<ResidentList> with RouteAware, RouteObserverMixin {
-  late Future<List<Resident>>? residentList;
+class _ResponsibleListState extends State<ResponsibleList> with RouteAware, RouteObserverMixin {
+  late Future<List<Responsible>>? responsibleList;
 
   @override
   void initState() {
     super.initState();
-    residentList = widget.service.getResidents();
+    responsibleList = widget.service.getResponsibles();
   }
 
   void refreshList() {
     setState(() {
-      residentList = null;
-      residentList = widget.service.getResidents();
+      responsibleList = widget.service.getResponsibles();
     });
   }
 
   @override
   void didPopNext() {
     setState(() {
-      residentList = null;
-      residentList = widget.service.getResidents();
+      responsibleList = null;
+      responsibleList = widget.service.getResponsibles();
     });
   }
 
-  Future<void> _didSelectAction(Map<String, Resident> selection) async {
+  Future<void> _didSelectAction(Map<String, int> selection) async {
     if (selection.keys.first == EDIT) {
-      Navigator.of(context).push(DefaultPageRouter(widget: ResidentEdit(resident: selection.values.first)));
+      Navigator.of(context).push(DefaultPageRouter(widget: ResponsibleList()));
     } else if (selection.keys.first == DELETE) {
-      final bool isValid = await widget.service.deleteResident(selection.values.first.id);
+      final bool isValid = await widget.service.deleteResponsible(selection.values.first);
 
       if (isValid) {
-        _showDialog(context, "Excluído com sucesso", "O residente foi excluído com sucesso!");
+        _showDialog(context, "Excluído com sucesso", "O responsável foi excluído com sucesso!");
 
         refreshList();
       } else {
-        _showDialog(context, "Falha ao excluir", "Não foi possível excluir o residente. Tente novamente.");
+        _showDialog(context, "Falha ao excluir", "Não foi possível excluir o responsável. Tente novamente.");
       }
     }
   }
@@ -78,7 +76,7 @@ class _ResidentListState extends State<ResidentList> with RouteAware, RouteObser
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          RESIDENTS,
+          RESPONSIBLES,
           style: TextStyle(fontFamily: 'SF Pro', fontSize: 20.0, color: Colors.white),
         ),
         backgroundColor: Color(0xFF1D6AFF),
@@ -100,26 +98,26 @@ class _ResidentListState extends State<ResidentList> with RouteAware, RouteObser
       drawer: CustomDrawer(),
       backgroundColor: Color.fromRGBO(245, 245, 245, 1),
       body: FutureBuilder(
-        future: residentList,
-        builder: (BuildContext context, AsyncSnapshot<List<Resident>> snapshot) {
+        future: responsibleList,
+        builder: (BuildContext context, AsyncSnapshot<List<Responsible>> snapshot) {
           if (snapshot.hasData) {
-            List<Resident>? residents = snapshot.data;
-            if (residents != null) {
+            List<Responsible>? responsibles = snapshot.data;
+            if (responsibles != null) {
               return ListView(
                 physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.only(bottom: 30),
-                children: residents
+                children: responsibles
                     .map(
-                      (Resident resident) => Card(
+                      (Responsible responsible) => Card(
                         child: ListTile(
-                            title: Text((resident.socialName == null ? resident.name : resident.socialName)!),
+                            title: Text((responsible.socialName == null ? responsible.name : responsible.socialName)!),
                             trailing: PopupMenuButton(
                               tooltip: "Abrir menu de opções",
                               onSelected: _didSelectAction,
                               itemBuilder: (BuildContext context) {
                                 return ACTIONS.map((String action) {
-                                  return PopupMenuItem<Map<String, Resident>>(
-                                    value: {action: resident},
+                                  return PopupMenuItem<Map<String, int>>(
+                                    value: {action: responsible.id},
                                     child: Row(
                                       children: [
                                         Padding(
@@ -140,7 +138,7 @@ class _ResidentListState extends State<ResidentList> with RouteAware, RouteObser
                               icon: Icon(Icons.more_vert),
                             ),
                             onTap: () => Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) => ResidentDetail(resident: resident)))),
+                                .push(MaterialPageRoute(builder: (context) => ResponsibleDetail(responsible: responsible)))),
                       ),
                     )
                     .toList(),
@@ -155,8 +153,8 @@ class _ResidentListState extends State<ResidentList> with RouteAware, RouteObser
         child: Container(height: 40.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ResidentEdit())),
-        tooltip: 'Criar um residente',
+        onPressed: () => setState(() => print("oi")),
+        tooltip: 'Criar um responsável',
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
